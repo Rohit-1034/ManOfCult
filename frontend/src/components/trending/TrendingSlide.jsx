@@ -31,28 +31,28 @@ export default function TrendingSlide({
       }`}
     >
       {/* Background Image Container */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-950">
+      <div className="absolute inset-0 w-full h-full overflow-hidden bg-[#101014]">
         {backdropSrc ? (
           <img
             src={backdropSrc}
             alt={movie.title}
             loading={isActive ? 'eager' : 'lazy'}
             onError={() => setImageError(true)}
-            className="w-full h-full object-cover object-top sm:object-[center_25%] opacity-80 sm:opacity-85 transition-transform duration-1000 ease-out"
+            className="w-full h-full object-cover object-top sm:object-[center_25%] opacity-85 transition-transform duration-1000 ease-out"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-slate-900 via-violet-950/40 to-slate-950 opacity-60" />
+          <div className="w-full h-full bg-gradient-to-br from-[#101014] via-[#30243B]/40 to-[#17151B] opacity-60" />
         )}
 
         {/* Gradient Overlays for Maximum Legibility */}
-        {/* Left-to-right dark gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080911] via-[#080911]/90 via-55% to-transparent w-full md:w-4/5 lg:w-3/5" />
+        {/* Left-to-right dark charcoal gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#101014] via-[#101014]/90 via-55% to-transparent w-full md:w-4/5 lg:w-3/5" />
         {/* Right softening */}
-        <div className="absolute inset-0 bg-gradient-to-l from-[#080911]/40 via-transparent to-transparent hidden md:block" />
+        <div className="absolute inset-0 bg-gradient-to-l from-[#101014]/40 via-transparent to-transparent hidden md:block" />
         {/* Bottom-to-top gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080911] via-[#080911]/50 via-40% to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#101014] via-[#101014]/60 via-40% to-transparent" />
         {/* Top-to-bottom subtle gradient for navbar contrast */}
-        <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-[#080911]/80 to-transparent pointer-events-none" />
+        <div className="absolute top-0 inset-x-0 h-28 bg-gradient-to-b from-[#101014]/80 to-transparent pointer-events-none" />
       </div>
 
       {/* Slide Content Box */}
@@ -64,24 +64,24 @@ export default function TrendingSlide({
           {/* Metadata Badges Row */}
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
             {/* HD Badge */}
-            <span className="px-2 py-0.5 rounded-md bg-amber-500/15 border border-amber-500/40 text-amber-300 font-extrabold tracking-wider text-[11px] uppercase shadow-sm">
+            <span className="glass-badge-gold px-2.5 py-0.5 rounded-lg font-extrabold tracking-wider text-[11px] uppercase shadow-sm">
               HD
             </span>
 
             {/* Rating */}
-            <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-900/90 border border-slate-700/80 text-amber-400 backdrop-blur-md">
-              <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-              <span className="font-bold text-gray-200">{rating}</span>
+            <div className="glass-badge px-2.5 py-0.5 rounded-lg flex items-center gap-1.5 text-[#E5BD72]">
+              <Star className="w-3.5 h-3.5 fill-[#E5BD72] text-[#E5BD72]" />
+              <span className="font-bold text-[#F1E9DF]">{rating}</span>
             </div>
 
             {/* Release Year */}
-            <span className="px-2.5 py-0.5 rounded-md bg-slate-900/80 border border-slate-800 text-gray-300 backdrop-blur-md font-mono">
+            <span className="glass-badge px-2.5 py-0.5 rounded-lg text-gray-300 font-mono">
               {releaseYear}
             </span>
 
             {/* Content Type: Movie */}
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-violet-950/70 border border-violet-800/60 text-violet-300 backdrop-blur-md">
-              <Film className="w-3 h-3 text-violet-400" />
+            <span className="glass-badge-lavender px-2.5 py-0.5 rounded-lg flex items-center gap-1.5">
+              <Film className="w-3 h-3 text-[#A78BFA]" />
               <span>Movie</span>
             </span>
 
@@ -90,7 +90,7 @@ export default function TrendingSlide({
               {genres.map((g, idx) => (
                 <span
                   key={idx}
-                  className="px-2 py-0.5 rounded-full bg-slate-800/80 border border-slate-700/60 text-gray-300 text-[11px] backdrop-blur-sm"
+                  className="glass-badge px-2.5 py-0.5 rounded-full text-gray-300 text-[11px]"
                 >
                   {g}
                 </span>
@@ -99,12 +99,12 @@ export default function TrendingSlide({
           </div>
 
           {/* Movie Title */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-tight sm:leading-none drop-shadow-xl line-clamp-2">
+          <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-black text-[#F1E9DF] tracking-tight leading-tight sm:leading-none drop-shadow-2xl line-clamp-2">
             {movie.title}
           </h1>
 
           {/* Overview / Description */}
-          <p className="text-xs sm:text-sm lg:text-base text-gray-300 line-clamp-2 sm:line-clamp-3 leading-relaxed max-w-2xl drop-shadow-sm font-normal">
+          <p className="text-xs sm:text-sm lg:text-base text-[#CBD5E1] line-clamp-2 sm:line-clamp-3 leading-relaxed max-w-2xl drop-shadow-sm font-normal">
             {movie.overview || 'Experience the cinematic adventure. Stream official trailers and dive into real-time ratings, cast specifications, and personalized recommendations.'}
           </p>
 
@@ -114,7 +114,7 @@ export default function TrendingSlide({
             <button
               type="button"
               onClick={() => onWatchNow(movie)}
-              className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs sm:text-sm tracking-wide uppercase flex items-center gap-2 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 transition-all duration-200 transform hover:scale-[1.03] active:scale-95 cursor-pointer"
+              className="glass-btn-gold px-6 py-3 rounded-2xl tracking-wide uppercase flex items-center gap-2 cursor-pointer text-xs sm:text-sm"
             >
               <Play className="w-4 h-4 fill-current" />
               <span>WATCH NOW</span>
@@ -124,9 +124,9 @@ export default function TrendingSlide({
             <button
               type="button"
               onClick={() => onSelectDetail(movie)}
-              className="px-6 py-3 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm tracking-wide uppercase border border-slate-700/80 hover:border-slate-600 backdrop-blur-md flex items-center gap-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-95 cursor-pointer shadow-md"
+              className="glass-btn-secondary px-6 py-3 rounded-2xl font-bold text-xs sm:text-sm tracking-wide uppercase flex items-center gap-2 cursor-pointer shadow-md"
             >
-              <Info className="w-4 h-4 text-violet-400" />
+              <Info className="w-4 h-4 text-[#A78BFA]" />
               <span>DETAIL</span>
             </button>
 
@@ -136,10 +136,10 @@ export default function TrendingSlide({
                 type="button"
                 onClick={() => onToggleWatchlist(movie.tmdbId || movie.id, movie)}
                 aria-label={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                className={`p-3 rounded-xl border backdrop-blur-md transition-all duration-200 flex items-center justify-center cursor-pointer active:scale-95 ${
+                className={`p-3 rounded-2xl border backdrop-blur-md transition-all duration-200 flex items-center justify-center cursor-pointer active:scale-95 ${
                   inWatchlist
-                    ? 'bg-amber-500/20 border-amber-500/60 text-amber-300 hover:bg-amber-500/30'
-                    : 'bg-slate-900/80 border-slate-700/80 text-gray-300 hover:text-white hover:bg-slate-800'
+                    ? 'bg-[#E5BD72]/20 border-[#E5BD72]/50 text-[#E5BD72] hover:bg-[#E5BD72]/30'
+                    : 'glass-badge hover:bg-white/[0.12] text-gray-300 hover:text-white'
                 }`}
                 title={inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
               >

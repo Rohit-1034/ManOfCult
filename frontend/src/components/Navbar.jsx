@@ -101,7 +101,7 @@ export default function Navbar({
 
   return (
     <>
-      <nav className="sticky top-0 z-40 w-full glass-nav px-3 sm:px-6 py-2.5 bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 transition-all">
+      <nav className="sticky top-0 z-40 w-full glass-nav px-3 sm:px-6 py-2.5 bg-[#101014]/85 backdrop-blur-2xl border-b border-white/[0.07] transition-all">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
           
           {/* Left: Brand Logo & Explore Menu Button */}
@@ -110,15 +110,15 @@ export default function Navbar({
               onClick={() => setCurrentView('dashboard')}
               className="flex items-center gap-2.5 cursor-pointer group flex-shrink-0"
             >
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-violet-600 via-indigo-600 to-amber-500 flex items-center justify-center text-white shadow-lg shadow-violet-600/30 group-hover:scale-105 transition-transform">
-                <Film className="w-5 h-5 text-white" />
+              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#30243B] via-[#4C385F] to-[#E5BD72] flex items-center justify-center text-[#F1E9DF] border border-white/[0.15] shadow-lg shadow-[#30243B]/40 group-hover:scale-105 transition-transform">
+                <Film className="w-5 h-5 text-[#F1E9DF]" />
               </div>
               <div className="hidden sm:block">
-                <span className="font-extrabold text-lg tracking-tight text-white flex items-center gap-1 leading-none">
-                  CineMatch <span className="text-violet-400 font-mono text-xs font-semibold">AI</span>
+                <span className="font-display font-extrabold text-lg tracking-tight text-[#F1E9DF] flex items-center gap-1.5 leading-none">
+                  CineMatch <span className="text-[#A78BFA] font-mono text-xs font-semibold px-1.5 py-0.5 rounded-md bg-white/[0.05] border border-white/[0.08]">AI</span>
                 </span>
                 <span className="text-[10px] text-gray-400 font-medium tracking-wide">
-                  Movies • Series • Anime
+                  Cinema • Series • Anime
                 </span>
               </div>
             </div>
@@ -126,20 +126,20 @@ export default function Navbar({
             {/* Mega Menu Toggle Button */}
             <button
               onClick={() => setMegaMenuOpen(!megaMenuOpen)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer ${
                 megaMenuOpen
-                  ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30'
-                  : 'bg-slate-900/80 text-gray-200 border-slate-800 hover:border-violet-700/60 hover:text-white'
+                  ? 'bg-gradient-to-r from-[#30243B] to-[#433256] text-[#F1E9DF] border-[#A78BFA]/40 shadow-lg shadow-[#30243B]/40'
+                  : 'bg-white/[0.05] text-[#F1E9DF] border-white/[0.08] hover:bg-white/[0.09] hover:border-white/[0.16]'
               }`}
             >
-              <Menu className="w-3.5 h-3.5 text-amber-400" />
+              <Menu className="w-3.5 h-3.5 text-[#E5BD72]" />
               <span>Explore</span>
               <ChevronDown className={`w-3 h-3 transition-transform ${megaMenuOpen ? 'rotate-180' : ''}`} />
             </button>
           </div>
 
           {/* Center: Desktop Nav Pills */}
-          <div className="hidden xl:flex items-center gap-1 bg-slate-900/80 px-2 py-1 rounded-2xl border border-slate-800/90">
+          <div className="hidden xl:flex items-center gap-1 bg-white/[0.04] backdrop-blur-xl px-2 py-1 rounded-2xl border border-white/[0.07]">
             {primaryNavItems.map((item) => {
               const Icon = item.icon;
               const active = currentView === item.id;
@@ -153,13 +153,13 @@ export default function Navbar({
                       setCurrentView(item.id);
                     }
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
                     active
-                      ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
-                      : 'text-gray-400 hover:text-gray-100 hover:bg-slate-800/80'
+                      ? 'bg-gradient-to-r from-[#30243B] to-[#251D30] text-[#F1E9DF] border border-[#A78BFA]/30 shadow-md'
+                      : 'text-gray-300 hover:text-white hover:bg-white/[0.06]'
                   }`}
                 >
-                  <Icon className="w-3.5 h-3.5" />
+                  <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#E5BD72]' : 'text-gray-400'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -171,20 +171,20 @@ export default function Navbar({
             {/* Universal Multi-Search Typeahead */}
             <div ref={searchContainerRef} className="relative hidden md:block w-56 lg:w-72">
               <form onSubmit={handleSearchSubmit}>
-                <Search className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-2.5" />
+                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   value={navSearch}
                   onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
                   onChange={(e) => setNavSearch(e.target.value)}
                   placeholder="Search movies, TV, anime..."
-                  className="w-full pl-9 pr-7 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-xs text-white placeholder-gray-500 focus:border-violet-500 outline-none transition-all"
+                  className="w-full pl-9 pr-7 py-1.5 rounded-xl bg-[#17151B]/80 border border-white/[0.08] text-xs text-[#F1E9DF] placeholder-gray-400 focus:border-[#A78BFA]/50 focus:ring-1 focus:ring-[#A78BFA]/25 outline-none transition-all shadow-inner"
                 />
                 {navSearch && (
                   <button
                     type="button"
                     onClick={() => { setNavSearch(''); setSuggestions([]); }}
-                    className="absolute right-2 top-2 text-gray-500 hover:text-white"
+                    className="absolute right-2 top-2 text-gray-400 hover:text-white cursor-pointer"
                   >
                     <X className="w-3.5 h-3.5" />
                   </button>
@@ -193,16 +193,16 @@ export default function Navbar({
 
               {/* Autocomplete Card Dropdown */}
               {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-violet-500/40 p-2 shadow-2xl shadow-violet-950/80 text-xs z-50">
-                  <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-violet-400 flex items-center justify-between border-b border-slate-800 pb-1.5 mb-1">
+                <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-[#17151B]/95 backdrop-blur-2xl border border-white/[0.1] p-2 shadow-2xl shadow-black/80 text-xs z-50">
+                  <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#A78BFA] flex items-center justify-between border-b border-white/[0.06] pb-1.5 mb-1">
                     <span className="flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-amber-400" />
+                      <Sparkles className="w-3 h-3 text-[#E5BD72]" />
                       Universal Search
                     </span>
-                    <span className="font-mono text-gray-500">Live TMDB</span>
+                    <span className="font-mono text-gray-400 text-[9px]">Live TMDB</span>
                   </div>
 
-                  <div className="divide-y divide-slate-800/70 max-h-80 overflow-y-auto scrollbar-thin">
+                  <div className="divide-y divide-white/[0.04] max-h-80 overflow-y-auto scrollbar-thin">
                     {suggestions.map((s) => {
                       const isTV = s.mediaType === 'tv';
                       const isPerson = s.mediaType === 'person';
@@ -210,9 +210,9 @@ export default function Navbar({
                         <div
                           key={s.id || `${s.mediaType}_${s.tmdbId}`}
                           onClick={() => handleSuggestionClick(s)}
-                          className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-violet-950/50 cursor-pointer transition-colors group"
+                          className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.06] cursor-pointer transition-colors group"
                         >
-                          <div className="w-9 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-slate-950">
+                          <div className="w-9 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-[#101014] border border-white/[0.06]">
                             {isPerson ? (
                               <img
                                 src={s.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
@@ -232,21 +232,21 @@ export default function Navbar({
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-1.5">
                               <span className={`text-[9px] font-bold uppercase px-1.5 py-0.2 rounded ${
-                                isTV ? 'bg-indigo-900/80 text-indigo-300' : isPerson ? 'bg-amber-900/80 text-amber-300' : 'bg-violet-900/80 text-violet-300'
+                                isTV ? 'bg-[#A78BFA]/20 text-[#A78BFA] border border-[#A78BFA]/30' : isPerson ? 'bg-[#E5BD72]/20 text-[#E5BD72] border border-[#E5BD72]/30' : 'bg-white/[0.08] text-[#F1E9DF] border border-white/[0.1]'
                               }`}>
                                 {isTV ? 'TV' : isPerson ? 'Person' : 'Movie'}
                               </span>
-                              <p className="font-bold text-gray-200 truncate group-hover:text-violet-300">
+                              <p className="font-bold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
                                 {s.title}
                               </p>
                             </div>
-                            <div className="flex items-center gap-1.5 text-[10px] text-gray-500 mt-0.5">
+                            <div className="flex items-center gap-1.5 text-[10px] text-gray-400 mt-0.5">
                               {s.releaseYear && <span>{s.releaseYear}</span>}
                               {s.knownForDepartment && <span>{s.knownForDepartment}</span>}
                             </div>
                           </div>
                           {s.voteAverage > 0 && (
-                            <div className="flex items-center gap-0.5 text-amber-400 font-bold text-[10px] flex-shrink-0">
+                            <div className="flex items-center gap-0.5 text-[#E5BD72] font-bold text-[10px] flex-shrink-0">
                               <Star className="w-2.5 h-2.5 fill-current" />
                               <span>{s.voteAverage.toFixed(1)}</span>
                             </div>
@@ -258,7 +258,7 @@ export default function Navbar({
 
                   <button
                     onClick={handleSearchSubmit}
-                    className="w-full mt-1.5 pt-1.5 border-t border-slate-800 text-center text-[11px] text-violet-400 hover:text-violet-300 font-semibold"
+                    className="w-full mt-1.5 pt-1.5 border-t border-white/[0.06] text-center text-[11px] text-[#A78BFA] hover:text-[#E5BD72] font-semibold transition-colors"
                   >
                     Press Enter to view all results &rarr;
                   </button>
@@ -269,7 +269,7 @@ export default function Navbar({
             {/* Mobile Search Icon */}
             <button
               onClick={() => setCurrentView('search')}
-              className="md:hidden p-2 rounded-xl bg-slate-900 text-gray-300 hover:text-white border border-slate-800"
+              className="md:hidden p-2 rounded-xl bg-white/[0.06] text-gray-300 hover:text-white border border-white/[0.08] cursor-pointer"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -280,9 +280,9 @@ export default function Navbar({
                 <button
                   id="user-menu-btn"
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  className="flex items-center gap-2 p-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-violet-600 transition-all"
+                  className="flex items-center gap-2 p-1.5 rounded-xl bg-white/[0.05] border border-white/[0.08] hover:border-[#A78BFA]/40 transition-all cursor-pointer"
                 >
-                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-violet-600 to-indigo-600 text-white flex items-center justify-center font-bold text-xs uppercase">
+                  <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-[#30243B] to-[#A78BFA] text-[#F1E9DF] flex items-center justify-center font-bold text-xs uppercase shadow-sm">
                     {user.username ? user.username.charAt(0) : 'U'}
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
@@ -292,51 +292,51 @@ export default function Navbar({
                 {userMenuOpen && (
                   <div 
                     id="user-menu-dropdown"
-                    className="absolute right-0 mt-2 w-52 rounded-2xl bg-slate-900/95 backdrop-blur-xl border border-slate-800 shadow-2xl p-1.5 text-xs z-50 animate-in fade-in duration-150"
+                    className="absolute right-0 mt-2 w-52 rounded-2xl bg-[#17151B]/95 backdrop-blur-2xl border border-white/[0.1] shadow-2xl p-1.5 text-xs z-50 animate-in fade-in duration-150"
                   >
-                    <div className="px-3 py-2 border-b border-slate-800 mb-1">
-                      <p className="font-bold text-gray-200 truncate">{user.username}</p>
-                      <p className="text-[10px] text-gray-500 truncate">{user.email}</p>
+                    <div className="px-3 py-2 border-b border-white/[0.06] mb-1">
+                      <p className="font-bold text-[#F1E9DF] truncate">{user.username}</p>
+                      <p className="text-[10px] text-gray-400 truncate">{user.email}</p>
                     </div>
 
                     <button
                       onClick={() => { setUserMenuOpen(false); setCurrentView('profile'); }}
-                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-slate-800 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-[#F1E9DF] hover:bg-white/[0.06] flex items-center gap-2 cursor-pointer transition-colors"
                     >
-                      <User className="w-3.5 h-3.5 text-violet-400" />
+                      <User className="w-3.5 h-3.5 text-[#A78BFA]" />
                       <span>My Profile</span>
                     </button>
 
                     <button
                       onClick={() => { setUserMenuOpen(false); setCurrentView('watchlist'); }}
-                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-slate-800 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-[#F1E9DF] hover:bg-white/[0.06] flex items-center gap-2 cursor-pointer transition-colors"
                     >
-                      <Bookmark className="w-3.5 h-3.5 text-amber-400" />
+                      <Bookmark className="w-3.5 h-3.5 text-[#E5BD72]" />
                       <span>Watchlist & History</span>
                     </button>
 
                     <button
                       onClick={() => { setUserMenuOpen(false); if (onOpenOnboarding) onOpenOnboarding(); }}
-                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-white hover:bg-slate-800 flex items-center gap-2"
+                      className="w-full text-left px-3 py-2 rounded-xl text-gray-300 hover:text-[#F1E9DF] hover:bg-white/[0.06] flex items-center gap-2 cursor-pointer transition-colors"
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+                      <Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />
                       <span>Taste Preferences</span>
                     </button>
 
                     {user.role === 'admin' && (
                       <button
                         onClick={() => { setUserMenuOpen(false); setCurrentView('admin'); }}
-                        className="w-full text-left px-3 py-2 rounded-xl text-amber-400 hover:bg-slate-800 flex items-center gap-2"
+                        className="w-full text-left px-3 py-2 rounded-xl text-[#E5BD72] hover:bg-white/[0.06] flex items-center gap-2 cursor-pointer transition-colors"
                       >
                         <Shield className="w-3.5 h-3.5" />
                         <span>Admin & ML Metrics</span>
                       </button>
                     )}
 
-                    <div className="border-t border-slate-800 my-1 pt-1">
+                    <div className="border-t border-white/[0.06] my-1 pt-1">
                       <button
                         onClick={() => { setUserMenuOpen(false); if (onLogout) onLogout(); }}
-                        className="w-full text-left px-3 py-2 rounded-xl text-red-400 hover:bg-red-950/30 flex items-center gap-2"
+                        className="w-full text-left px-3 py-2 rounded-xl text-red-400 hover:bg-red-950/30 flex items-center gap-2 cursor-pointer transition-colors"
                       >
                         <LogOut className="w-3.5 h-3.5" />
                         <span>Sign Out</span>
@@ -348,9 +348,10 @@ export default function Navbar({
             ) : (
               <button
                 onClick={onOpenAuth}
-                className="px-4 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-semibold text-xs transition-all shadow-md shadow-violet-600/30"
+                className="px-4 py-1.5 rounded-xl text-xs font-bold glass-btn-primary cursor-pointer flex items-center gap-1.5 shadow-md"
               >
-                Sign In
+                <User className="w-3.5 h-3.5" />
+                <span>Sign In</span>
               </button>
             )}
 

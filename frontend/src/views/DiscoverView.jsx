@@ -85,14 +85,14 @@ export default function DiscoverView({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 animate-in fade-in duration-300">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-extrabold text-white flex items-center gap-2.5">
-          <Compass className="w-7 h-7 text-violet-400" />
+        <h1 className="text-3xl font-black font-['Outfit'] text-[#F1E9DF] flex items-center gap-2.5">
+          <Compass className="w-7 h-7 text-[#E5BD72]" />
           <span>Movie Catalog & Discovery</span>
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-1">
+        <p className="text-xs sm:text-sm text-slate-400 mt-1">
           Explore 9,780+ movies from cinema history up to modern 2026 releases with authentic posters and metadata.
         </p>
       </div>
@@ -101,19 +101,19 @@ export default function DiscoverView({
       <div className="mb-8 space-y-4">
         <div className="flex flex-col sm:flex-row gap-3">
           <form onSubmit={handleSearch} className="relative flex-1">
-            <Search className="w-4 h-4 text-gray-500 absolute left-4 top-3.5" />
+            <Search className="w-4 h-4 text-[#E5BD72] absolute left-4 top-3.5 pointer-events-none" />
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search by title, themes, or tags (e.g. 'Dune', 'Oppenheimer', 'Matrix')..."
-              className="w-full pl-11 pr-10 py-3 rounded-2xl bg-slate-900 border border-slate-800 focus:border-violet-500 text-sm text-white placeholder-gray-500 outline-none transition-all"
+              className="glass-input w-full pl-11 pr-10 py-3 rounded-2xl text-sm text-[#F1E9DF] placeholder-slate-400 outline-none"
             />
             {query && (
               <button
                 type="button"
                 onClick={clearSearch}
-                className="absolute right-3.5 top-3.5 text-gray-500 hover:text-white"
+                className="absolute right-3.5 top-3.5 text-slate-400 hover:text-white"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -125,10 +125,10 @@ export default function DiscoverView({
             <select
               value={selectedSort}
               onChange={(e) => { setSelectedSort(e.target.value); setPage(1); }}
-              className="px-4 py-3 rounded-2xl bg-slate-900 border border-slate-800 text-sm text-gray-200 outline-none focus:border-violet-500 cursor-pointer"
+              className="px-4 py-3 rounded-2xl bg-[#17151B]/90 border border-white/[0.1] text-sm text-[#F1E9DF] outline-none focus:border-[#A78BFA] cursor-pointer backdrop-blur-md"
             >
               {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value} className="bg-slate-900 text-white">
+                <option key={opt.value} value={opt.value} className="bg-[#17151B] text-[#F1E9DF]">
                   Sort: {opt.label}
                 </option>
               ))}
@@ -138,8 +138,8 @@ export default function DiscoverView({
 
         {/* Era Filters */}
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none text-xs">
-          <span className="text-gray-500 font-semibold uppercase tracking-wider text-[10px] mr-1 flex items-center gap-1">
-            <Flame className="w-3.5 h-3.5 text-amber-400" /> Era:
+          <span className="text-slate-400 font-semibold uppercase tracking-wider text-[10px] mr-1 flex items-center gap-1">
+            <Flame className="w-3.5 h-3.5 text-[#E5BD72]" /> Era:
           </span>
           {ERAS.map((era) => {
             const active = selectedEra === era.id;
@@ -147,10 +147,10 @@ export default function DiscoverView({
               <button
                 key={era.id}
                 onClick={() => { setSelectedEra(era.id); setPage(1); }}
-                className={`px-3 py-1.5 rounded-xl font-medium whitespace-nowrap transition-all ${
+                className={`px-3.5 py-1.5 rounded-xl font-medium whitespace-nowrap transition-all border ${
                   active
-                    ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-md shadow-violet-600/30'
-                    : 'bg-slate-900 text-gray-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                    ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold border-[#E5BD72] shadow-[0_0_15px_rgba(229,189,114,0.3)]'
+                    : 'bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08] border-white/[0.08]'
                 }`}
               >
                 {era.label}
@@ -167,10 +167,10 @@ export default function DiscoverView({
               <button
                 key={genre}
                 onClick={() => { setSelectedGenre(genre); setPage(1); }}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all border ${
                   active
-                    ? 'bg-violet-600 text-white shadow-md shadow-violet-600/30'
-                    : 'bg-slate-900 text-gray-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                    ? 'bg-[#30243B] text-[#A78BFA] border-[#A78BFA]/50 shadow-sm'
+                    : 'bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08] border-white/[0.08]'
                 }`}
               >
                 {genre}

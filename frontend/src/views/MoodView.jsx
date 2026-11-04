@@ -141,9 +141,12 @@ export default function MoodView({
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8 animate-in fade-in duration-300">
       {/* Header */}
       <div className="text-center max-w-2xl mx-auto space-y-3">
-        <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-black font-['Outfit'] text-[#F1E9DF] tracking-tight">
           How Are You Feeling Tonight?
         </h1>
+        <p className="text-xs sm:text-sm text-slate-400">
+          Match your emotional wavelength with verified cinematic masterworks and episodic series.
+        </p>
       </div>
 
       {/* 8-Mood Selector Grid */}
@@ -156,13 +159,13 @@ export default function MoodView({
               onClick={() => handleSelectMood(m)}
               className={`p-3.5 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-between min-h-[95px] select-none ${
                 active
-                  ? `bg-gradient-to-b ${m.color} scale-105 shadow-xl shadow-violet-950/30 border-amber-400/80`
-                  : 'bg-slate-900/60 border-slate-800 text-gray-400 hover:text-white hover:border-slate-700 hover:bg-slate-800/80'
+                  ? 'bg-gradient-to-b from-[#30243B] to-[#17151B] scale-105 shadow-xl shadow-[#30243B]/40 border-[#E5BD72] text-[#E5BD72]'
+                  : 'bg-white/[0.04] border-white/[0.07] text-slate-400 hover:text-white hover:border-white/[0.15] hover:bg-white/[0.08]'
               }`}
             >
               <span className="text-2xl mb-1">{m.emoji}</span>
               <p className="text-xs font-bold leading-tight w-full text-center">{m.label.split(' ')[0]}</p>
-              <span className="text-[10px] text-gray-400 opacity-80 mt-0.5 truncate w-full text-center">
+              <span className="text-[10px] text-slate-400 opacity-80 mt-0.5 truncate w-full text-center">
                 {m.label.split('&')[1]?.trim() || ''}
               </span>
             </button>
@@ -173,19 +176,19 @@ export default function MoodView({
       {/* Natural Language Free-Text Prompt Input & Media Filter */}
       <div className="max-w-3xl mx-auto space-y-4">
         <form onSubmit={handlePromptSubmit} className="relative">
-          <Sparkles className="w-4 h-4 text-amber-400 absolute left-4 top-4" />
+          <Sparkles className="w-4 h-4 text-[#E5BD72] absolute left-4 top-4 pointer-events-none" />
           <input
             type="text"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
             placeholder="Describe what you want to feel... (e.g. 'exhausted after work, need cozy comedy with good friends')"
-            className="w-full pl-11 pr-32 py-3.5 rounded-2xl bg-slate-900 border border-slate-700/80 focus:border-amber-400 text-sm text-white placeholder-gray-500 outline-none shadow-xl transition-all"
+            className="glass-input w-full pl-11 pr-32 py-3.5 rounded-2xl text-sm text-[#F1E9DF] placeholder-slate-400 outline-none transition-all"
           />
           {prompt && (
             <button
               type="button"
               onClick={handleClearPrompt}
-              className="absolute right-28 top-3.5 text-gray-400 hover:text-white p-1"
+              className="absolute right-28 top-3.5 text-slate-400 hover:text-white p-1"
               title="Clear"
             >
               <X className="w-4 h-4" />
@@ -194,7 +197,7 @@ export default function MoodView({
           <button
             type="submit"
             disabled={loading}
-            className="absolute right-2 top-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            className="absolute right-2 top-2 px-4 py-2 rounded-xl glass-btn-gold text-xs shadow-md transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
             <span>Search</span>
             <Send className="w-3 h-3" />
@@ -216,11 +219,11 @@ export default function MoodView({
                 onClick={() => handleMediaTypeChange(tab.id)}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
                   active
-                    ? 'bg-violet-600 text-white border-violet-500 shadow-md shadow-violet-600/30'
-                    : 'bg-slate-900/80 text-gray-400 border-slate-800 hover:text-white hover:border-slate-700'
+                    ? 'bg-gradient-to-r from-[#A78BFA] to-[#F1E9DF] text-[#101014] font-bold border-[#A78BFA] shadow-[0_0_15px_rgba(167,139,250,0.3)]'
+                    : 'bg-white/[0.04] text-slate-400 border-white/[0.08] hover:text-white hover:bg-white/[0.08]'
                 }`}
               >
-                <Icon className="w-3.5 h-3.5" />
+                <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#101014]' : 'text-[#E5BD72]'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -230,18 +233,18 @@ export default function MoodView({
 
       {/* Recommendations Results Section */}
       <div className="space-y-4">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/[0.08] pb-4">
           <div>
-            <h2 className="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-amber-400" />
-              <span>Recommended For: <span className="text-amber-400">{activeMoodTitle}</span></span>
+            <h2 className="text-xl sm:text-2xl font-black font-['Outfit'] text-[#F1E9DF] flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-[#E5BD72]" />
+              <span>Recommended For: <span className="text-[#E5BD72]">{activeMoodTitle}</span></span>
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5">
+            <p className="text-xs text-slate-400 mt-0.5">
               {activeMoodObj?.description || 'Curated titles ranked by sentiment resonance, narrative themes, and TMDB community scores'}
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-gray-500 font-mono bg-slate-900 px-2.5 py-1 rounded-lg border border-slate-800">
+            <span className="glass-badge text-xs font-mono px-3 py-1 rounded-lg">
               {recommendations.length} curated titles
             </span>
           </div>
@@ -251,7 +254,7 @@ export default function MoodView({
         {loading ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {[...Array(12)].map((_, i) => (
-              <div key={i} className="aspect-[2/3] bg-slate-900/80 border border-slate-800 rounded-2xl animate-pulse" />
+              <div key={i} className="aspect-[2/3] bg-white/[0.04] border border-white/[0.06] rounded-2xl animate-pulse" />
             ))}
           </div>
         ) : recommendations.length > 0 ? (
@@ -269,8 +272,8 @@ export default function MoodView({
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-slate-900/40 rounded-3xl border border-slate-800">
-            <p className="text-gray-400 text-sm">No mood recommendations found. Try a different mood or description.</p>
+          <div className="text-center py-16 glass-panel rounded-3xl">
+            <p className="text-slate-400 text-sm">No mood recommendations found. Try a different mood or description.</p>
           </div>
         )}
       </div>

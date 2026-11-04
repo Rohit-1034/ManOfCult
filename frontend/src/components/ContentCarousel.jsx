@@ -33,12 +33,12 @@ export default function ContentCarousel({
       <div className="flex items-end justify-between mb-4 px-1">
         <div className="flex items-center gap-3">
           {Icon && (
-            <div className="w-9 h-9 rounded-xl bg-violet-950/60 border border-violet-800/40 flex items-center justify-center text-amber-400 shadow-inner">
-              <Icon className="w-5 h-5 text-amber-400" />
+            <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.09] flex items-center justify-center text-[#E5BD72] shadow-sm backdrop-blur-md">
+              <Icon className="w-5 h-5 text-[#E5BD72]" />
             </div>
           )}
           <div>
-            <h2 className="text-xl md:text-2xl font-bold text-gray-100 tracking-tight flex items-center gap-2">
+            <h2 className="font-display text-xl md:text-2xl font-bold text-[#F1E9DF] tracking-tight flex items-center gap-2">
               {title}
             </h2>
             {subtitle && (
@@ -53,7 +53,7 @@ export default function ContentCarousel({
           {onViewAll && (
             <button
               onClick={onViewAll}
-              className="text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-violet-950/40 border border-transparent hover:border-violet-800/40"
+              className="text-xs font-semibold text-[#E5BD72] hover:text-[#F1E9DF] transition-all flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.08] cursor-pointer"
             >
               <span>{viewAllLabel}</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -65,14 +65,14 @@ export default function ContentCarousel({
             <button
               onClick={() => scroll('left')}
               aria-label="Scroll left"
-              className="w-8 h-8 rounded-full bg-slate-900/80 hover:bg-violet-600 border border-slate-800 hover:border-violet-500 text-gray-300 hover:text-white flex items-center justify-center transition-all shadow-sm"
+              className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/[0.08] text-gray-300 hover:text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={() => scroll('right')}
               aria-label="Scroll right"
-              className="w-8 h-8 rounded-full bg-slate-900/80 hover:bg-violet-600 border border-slate-800 hover:border-violet-500 text-gray-300 hover:text-white flex items-center justify-center transition-all shadow-sm"
+              className="w-8 h-8 rounded-xl bg-white/[0.05] hover:bg-white/[0.12] border border-white/[0.08] text-gray-300 hover:text-white flex items-center justify-center transition-all shadow-sm cursor-pointer"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -83,7 +83,7 @@ export default function ContentCarousel({
       {/* Carousel Container */}
       <div
         ref={scrollRef}
-        className="flex gap-4 overflow-x-auto scroll-smooth pb-3 pt-1 px-1 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent select-none"
+        className="flex gap-4 overflow-x-auto scroll-smooth pb-3 pt-1 px-1 scrollbar-thin scrollbar-thumb-white/[0.08] scrollbar-track-transparent select-none"
         style={{ scrollSnapType: 'x mandatory' }}
       >
         {/* Loading Skeletons */}
@@ -92,10 +92,10 @@ export default function ContentCarousel({
             {[...Array(6)].map((_, i) => (
               <div
                 key={i}
-                className="w-44 md:w-52 shrink-0 aspect-[2/3] rounded-2xl bg-slate-900/80 border border-slate-800/60 animate-pulse flex flex-col justify-end p-4"
+                className="w-44 md:w-52 shrink-0 aspect-[2/3] rounded-2xl bg-[#17151B]/60 border border-white/[0.05] animate-pulse flex flex-col justify-end p-4"
               >
-                <div className="h-4 w-3/4 bg-slate-800 rounded mb-2"></div>
-                <div className="h-3 w-1/2 bg-slate-800 rounded"></div>
+                <div className="h-4 w-3/4 bg-white/[0.08] rounded mb-2"></div>
+                <div className="h-3 w-1/2 bg-white/[0.06] rounded"></div>
               </div>
             ))}
           </>

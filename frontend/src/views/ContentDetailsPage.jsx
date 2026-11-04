@@ -117,90 +117,96 @@ export default function ContentDetailsPage({
   const directors = credits.directors || [];
 
   return (
-    <div className="min-h-screen bg-[#080911] text-gray-100 pb-20 animate-in fade-in duration-300">
+    <div className="min-h-screen bg-[#101014] text-[#F1E9DF] pb-24 animate-in fade-in duration-300">
       
       {/* 1. Backdrop Banner with Gradient Overlay */}
-      <div className="relative w-full h-[380px] md:h-[500px] overflow-hidden bg-slate-950">
+      <div className="relative w-full h-[400px] md:h-[540px] overflow-hidden bg-[#101014]">
         {backdropUrl ? (
           <img
             src={backdropUrl}
             alt={title}
-            className="w-full h-full object-cover object-top opacity-40 md:opacity-50"
+            className="w-full h-full object-cover object-top opacity-35 md:opacity-45 scale-105 transition-transform duration-1000"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-violet-950 via-slate-950 to-slate-950" />
+          <div className="w-full h-full bg-gradient-to-br from-[#30243B]/60 via-[#17151B] to-[#101014]" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080911] via-[#080911]/60 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080911] via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#101014] via-[#101014]/70 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#101014] via-transparent to-transparent" />
+
+        {/* Ambient Warm Glow Blob */}
+        <div className="absolute -top-20 left-1/3 w-96 h-96 bg-[#E5BD72]/10 rounded-full blur-[120px] pointer-events-none" />
 
         {/* Back Navigation Button */}
         <div className="absolute top-6 left-4 md:left-8 z-20">
           <button
             onClick={onBack}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-950/80 hover:bg-violet-600 text-gray-200 hover:text-white border border-slate-800 transition-all backdrop-blur-md shadow-lg"
+            className="glass-btn-secondary flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all"
           >
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-xs font-bold uppercase tracking-wider">Back</span>
+            <ArrowLeft className="w-4 h-4 text-[#E5BD72]" />
+            <span>Back</span>
           </button>
         </div>
       </div>
 
       {/* 2. Hero Information Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-44 md:-mt-64 relative z-20">
-        <div className="flex flex-col md:flex-row gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-48 md:-mt-72 relative z-20">
+        <div className="glass-panel p-6 sm:p-8 md:p-10 rounded-3xl flex flex-col md:flex-row gap-8 items-start relative overflow-hidden">
+          <div className="absolute -bottom-20 -right-20 w-80 h-80 bg-[#30243B]/25 rounded-full blur-[90px] pointer-events-none" />
           
           {/* Main Poster */}
-          <div className="w-48 sm:w-60 md:w-72 shrink-0 rounded-2xl overflow-hidden shadow-2xl shadow-black/80 border-2 border-slate-800/80 bg-slate-900 mx-auto md:mx-0">
+          <div className="w-48 sm:w-60 md:w-72 shrink-0 rounded-2xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] border border-white/[0.12] bg-[#17151B] mx-auto md:mx-0 group">
             <ContentPoster
               title={title}
               posterPath={posterUrl}
               mediaType={actualMediaType}
               size="w500"
-              className="w-full h-full"
+              className="w-full h-full group-hover:scale-105 transition-transform duration-500"
             />
           </div>
 
           {/* Core Metadata */}
-          <div className="flex-1 space-y-4 text-center md:text-left">
+          <div className="flex-1 space-y-4 text-center md:text-left relative z-10">
             
             {/* Category and Year Pills */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-              <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase border backdrop-blur-md ${
-                isTV ? 'bg-indigo-900/80 text-indigo-300 border-indigo-700/60' : 'bg-violet-900/80 text-violet-300 border-violet-700/60'
+              <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase backdrop-blur-md border ${
+                isTV 
+                  ? 'bg-[#30243B]/80 text-[#A78BFA] border-[#A78BFA]/30' 
+                  : 'bg-white/[0.06] text-[#E5BD72] border-[#E5BD72]/30'
               }`}>
                 {isTV ? <Tv className="w-3.5 h-3.5" /> : <Film className="w-3.5 h-3.5" />}
                 {isTV ? 'TV SERIES' : 'FEATURE FILM'}
               </span>
 
               {releaseYear && (
-                <span className="px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-gray-300">
+                <span className="glass-badge px-3 py-1 rounded-full text-xs font-semibold text-slate-300">
                   {releaseYear}
                 </span>
               )}
 
               {details?.runtime && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-gray-300">
-                  <Clock className="w-3 h-3 text-gray-400" />
+                <span className="glass-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-300">
+                  <Clock className="w-3 h-3 text-[#E5BD72]" />
                   {Math.floor(details.runtime / 60)}h {details.runtime % 60}m
                 </span>
               )}
 
               {isTV && seasonsCount && (
-                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-800 text-xs font-semibold text-gray-300">
-                  <Layers className="w-3 h-3 text-indigo-400" />
+                <span className="glass-badge inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold text-slate-300">
+                  <Layers className="w-3 h-3 text-[#A78BFA]" />
                   {seasonsCount} {seasonsCount === 1 ? 'Season' : 'Seasons'} ({episodesCount} Episodes)
                 </span>
               )}
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black font-['Outfit'] text-[#F1E9DF] tracking-tight leading-tight">
               {title}
             </h1>
 
             {/* Tagline */}
             {details?.tagline && (
-              <p className="text-sm md:text-base italic text-gray-400 font-serif">
+              <p className="text-sm md:text-base italic text-[#E5BD72]/85 font-['Inter']">
                 "{details.tagline}"
               </p>
             )}
@@ -208,10 +214,10 @@ export default function ContentDetailsPage({
             {/* Rating & Actions */}
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-1">
               {rating && (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 text-amber-400 font-bold text-sm shadow-sm">
-                  <Star className="w-4 h-4 fill-amber-400" />
+                <div className="glass-badge-gold flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl font-bold text-sm shadow-sm">
+                  <Star className="w-4 h-4 fill-[#E5BD72] text-[#E5BD72]" />
                   <span>{rating}</span>
-                  <span className="text-xs text-gray-500 font-normal">/ 10 ({details.voteCount?.toLocaleString()} votes)</span>
+                  <span className="text-xs text-slate-400 font-normal">/ 10 ({details.voteCount?.toLocaleString()} votes)</span>
                 </div>
               )}
 
@@ -226,8 +232,8 @@ export default function ContentDetailsPage({
                 }}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all shadow-md ${
                   inWatchlist
-                    ? 'bg-amber-500 text-slate-950 border border-amber-400 shadow-amber-500/20'
-                    : 'bg-violet-600 hover:bg-violet-500 text-white shadow-violet-600/30'
+                    ? 'glass-btn-gold text-[#101014]'
+                    : 'glass-btn-primary'
                 }`}
               >
                 {inWatchlist ? <Check className="w-4 h-4 stroke-[3]" /> : <Bookmark className="w-4 h-4" />}
@@ -238,9 +244,9 @@ export default function ContentDetailsPage({
               {trailers.length > 0 && (
                 <button
                   onClick={() => setActiveTrailer(trailers[0])}
-                  className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs md:text-sm border border-slate-800 transition-all shadow-sm"
+                  className="glass-btn-secondary flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs md:text-sm shadow-sm"
                 >
-                  <Play className="w-4 h-4 text-amber-400 fill-amber-400" />
+                  <Play className="w-4 h-4 text-[#E5BD72] fill-[#E5BD72]" />
                   <span>Watch Trailer</span>
                 </button>
               )}
@@ -252,7 +258,7 @@ export default function ContentDetailsPage({
                 {genres.map((g, i) => (
                   <span
                     key={i}
-                    className="px-3 py-1 rounded-lg bg-slate-900/70 border border-slate-800 text-xs font-medium text-gray-300"
+                    className="glass-badge px-3 py-1 rounded-lg text-xs font-medium text-slate-300"
                   >
                     {typeof g === 'string' ? g : g.name}
                   </span>
@@ -262,21 +268,21 @@ export default function ContentDetailsPage({
 
             {/* Overview */}
             <div className="pt-2">
-              <h2 className="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
                 Storyline
               </h2>
-              <p className="text-sm md:text-base text-gray-300 leading-relaxed max-w-3xl">
+              <p className="text-sm md:text-base text-slate-300 leading-relaxed max-w-3xl">
                 {overview}
               </p>
             </div>
 
             {/* Creators / Directors */}
             {(directors.length > 0 || creators.length > 0) && (
-              <div className="pt-2 text-xs text-gray-400">
-                <span className="font-semibold text-gray-300">
+              <div className="pt-2 text-xs text-slate-400">
+                <span className="font-semibold text-slate-300">
                   {isTV ? 'Created by:' : 'Directed by:'}
                 </span>{' '}
-                <span className="text-amber-400 font-medium">
+                <span className="text-[#E5BD72] font-semibold">
                   {isTV ? creators.join(', ') : directors.join(', ')}
                 </span>
               </div>
@@ -289,25 +295,27 @@ export default function ContentDetailsPage({
 
       {/* 3. Cast Section */}
       {credits.cast && credits.cast.length > 0 && (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
-          <h2 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
-            <User className="w-5 h-5 text-amber-400" />
-            Top Billed Cast
-          </h2>
-          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
-            {credits.cast.slice(0, 10).map((c) => (
-              <div key={c.id} className="w-28 shrink-0 text-center">
-                <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-slate-800 border-2 border-slate-700/80 mb-2 shadow-md">
-                  <img
-                    src={c.profilePath || 'https://via.placeholder.com/185x278?text=Actor'}
-                    alt={c.name}
-                    className="w-full h-full object-cover"
-                  />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+          <div className="glass-panel p-6 sm:p-8 rounded-3xl">
+            <h2 className="text-xl font-bold font-['Outfit'] text-[#F1E9DF] mb-5 flex items-center gap-2.5">
+              <User className="w-5 h-5 text-[#E5BD72]" />
+              Top Billed Cast & Characters
+            </h2>
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
+              {credits.cast.slice(0, 10).map((c) => (
+                <div key={c.id} className="w-28 shrink-0 text-center group">
+                  <div className="w-22 h-22 mx-auto rounded-full overflow-hidden bg-[#17151B] border border-white/[0.12] mb-2.5 shadow-lg group-hover:border-[#E5BD72]/50 group-hover:scale-105 transition-all">
+                    <img
+                      src={c.profilePath || 'https://via.placeholder.com/185x278?text=Actor'}
+                      alt={c.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <p className="text-xs font-semibold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">{c.name}</p>
+                  <p className="text-[11px] text-slate-400 truncate">{c.character}</p>
                 </div>
-                <p className="text-xs font-bold text-gray-200 truncate">{c.name}</p>
-                <p className="text-[10px] text-gray-500 truncate">{c.character}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       )}
@@ -344,16 +352,16 @@ export default function ContentDetailsPage({
 
       {/* Trailer Modal */}
       {activeTrailer && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="relative w-full max-w-4xl bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl">
-            <div className="flex items-center justify-between p-4 border-b border-slate-800">
-              <h3 className="font-bold text-sm text-gray-200 truncate flex items-center gap-2">
-                <Video className="w-4 h-4 text-amber-400" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-xl animate-in fade-in duration-200">
+          <div className="relative w-full max-w-4xl bg-[#17151B]/95 rounded-3xl overflow-hidden border border-white/[0.12] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]">
+            <div className="flex items-center justify-between p-4 px-6 border-b border-white/[0.08]">
+              <h3 className="font-bold text-sm text-[#F1E9DF] truncate flex items-center gap-2">
+                <Video className="w-4 h-4 text-[#E5BD72]" />
                 {activeTrailer.name || `${title} Official Trailer`}
               </h3>
               <button
                 onClick={() => setActiveTrailer(null)}
-                className="p-1 rounded-lg hover:bg-slate-800 text-gray-400 hover:text-white"
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/[0.08] text-slate-400 hover:text-white transition-colors"
               >
                 ✕
               </button>

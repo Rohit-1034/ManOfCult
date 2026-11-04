@@ -48,24 +48,24 @@ export default function MovieDetailsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl overflow-y-auto">
       <div
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-slate-900 border border-violet-500/30 shadow-2xl shadow-violet-950/50 text-gray-100 flex flex-col"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl bg-[#17151B]/95 border border-white/[0.12] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] text-[#F1E9DF] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-black/60 text-gray-300 hover:text-white hover:bg-violet-600 transition-all border border-white/10"
+          className="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-white/[0.08] hover:bg-white/[0.16] text-slate-300 hover:text-white transition-all border border-white/[0.1] flex items-center justify-center backdrop-blur-md"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Hero Banner with Movie Poster & Details */}
-        <div className="relative p-6 sm:p-8 flex flex-col md:flex-row gap-8 bg-gradient-to-b from-violet-950/40 via-slate-900 to-slate-900">
+        <div className="relative p-6 sm:p-8 flex flex-col md:flex-row gap-8 bg-gradient-to-b from-[#30243B]/40 via-[#17151B] to-[#17151B]">
           {/* Poster */}
           <div className="w-48 sm:w-60 flex-shrink-0 mx-auto md:mx-0">
-            <div className="relative aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-violet-500/30 bg-slate-950">
+            <div className="relative aspect-[2/3] rounded-2xl overflow-hidden shadow-2xl border border-white/[0.12] bg-[#101014]">
               <MoviePoster
                 posterPath={movie.rawPosterPath || movie.posterPath}
                 tmdbId={movie.tmdbId}
@@ -82,25 +82,25 @@ export default function MovieDetailsModal({
           {/* Details */}
           <div className="flex flex-col justify-between flex-1">
             <div>
-              <div className="flex flex-wrap items-center gap-3 mb-2">
-                <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-900/60 text-violet-300 text-xs font-semibold border border-violet-700/50">
+              <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
+                <span className="glass-badge-gold flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold">
                   <Film className="w-3.5 h-3.5" />
                   {Array.isArray(movie.genres) ? movie.genres[0] : 'Feature Film'}
                 </span>
                 {movie.releaseYear && (
-                  <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 text-gray-300 text-xs font-medium">
-                    <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  <span className="glass-badge flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium text-slate-300">
+                    <Calendar className="w-3.5 h-3.5 text-[#E5BD72]" />
                     {movie.releaseYear}
                   </span>
                 )}
-                <div className="flex items-center gap-1 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-xs font-semibold border border-amber-500/30">
-                  <Star className="w-3.5 h-3.5 fill-amber-400" />
+                <div className="glass-badge flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold text-[#E5BD72]">
+                  <Star className="w-3.5 h-3.5 fill-[#E5BD72]" />
                   <span>{movie.voteAverage ? movie.voteAverage.toFixed(1) : '—'} / 5.0</span>
-                  <span className="text-gray-400 font-normal">({movie.voteCount} reviews)</span>
+                  <span className="text-slate-400 font-normal">({movie.voteCount} reviews)</span>
                 </div>
               </div>
 
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white mb-3">
+              <h2 className="text-2xl sm:text-3xl font-black font-['Outfit'] tracking-tight text-[#F1E9DF] mb-3">
                 {movie.title}
               </h2>
 
@@ -109,28 +109,28 @@ export default function MovieDetailsModal({
                 {(Array.isArray(movie.genres) ? movie.genres : []).map((genre, idx) => (
                   <span
                     key={idx}
-                    className="text-xs px-2.5 py-1 rounded-lg bg-slate-800/80 text-violet-300 border border-violet-800/30"
+                    className="text-xs px-2.5 py-1 rounded-lg glass-badge text-slate-300"
                   >
                     {genre}
                   </span>
                 ))}
               </div>
 
-              <p className="text-sm leading-relaxed text-gray-300 mb-6">
+              <p className="text-sm leading-relaxed text-slate-300 mb-6">
                 {movie.overview || "An engaging cinematic presentation featured in the CineMatch AI catalog."}
               </p>
             </div>
 
             {/* Actions: Watchlist & Interactive Rating */}
-            <div className="pt-4 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-4">
+            <div className="pt-4 border-t border-white/[0.08] flex flex-wrap items-center justify-between gap-4">
               <div className="flex flex-wrap items-center gap-3">
                 {/* Watchlist button */}
                 <button
                   onClick={() => onToggleWatchlist && onToggleWatchlist(movie.movieId)}
-                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all shadow-lg ${
+                  className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm transition-all shadow-lg ${
                     inWatchlist
-                      ? 'bg-violet-600 text-white shadow-violet-600/30 hover:bg-violet-700'
-                      : 'bg-slate-800 text-gray-200 hover:bg-violet-950 hover:text-violet-300 border border-violet-700/40'
+                      ? 'glass-btn-gold text-[#101014]'
+                      : 'glass-btn-primary'
                   }`}
                 >
                   <Bookmark className={`w-4 h-4 ${inWatchlist ? 'fill-current' : ''}`} />
@@ -143,16 +143,16 @@ export default function MovieDetailsModal({
                     onClose();
                     if (onSelectMovie) onSelectMovie(movie);
                   }}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white shadow-lg shadow-violet-900/40"
+                  className="glass-btn-secondary flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md"
                 >
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-4 h-4 text-[#E5BD72]" />
                   <span>Full IMDb Page ↗</span>
                 </button>
               </div>
 
               {/* Interactive Rating Widget */}
-              <div className="flex items-center gap-2 bg-slate-800/80 px-4 py-2 rounded-xl border border-slate-700">
-                <span className="text-xs font-medium text-gray-400">Rate this:</span>
+              <div className="flex items-center gap-2 bg-white/[0.04] px-4 py-2 rounded-xl border border-white/[0.08] backdrop-blur-md">
+                <span className="text-xs font-medium text-slate-400">Rate this:</span>
                 <div className="flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <button
@@ -161,20 +161,20 @@ export default function MovieDetailsModal({
                       onMouseEnter={() => setHoverRating(star)}
                       onMouseLeave={() => setHoverRating(0)}
                       onClick={() => handleRate(star)}
-                      className="p-1 text-gray-600 hover:scale-125 transition-transform"
+                      className="p-1 text-slate-600 hover:scale-125 transition-transform"
                     >
                       <Star
                         className={`w-5 h-5 transition-colors ${
                           (hoverRating || userRating) >= star
-                            ? 'text-amber-400 fill-amber-400'
-                            : 'text-gray-600'
+                            ? 'text-[#E5BD72] fill-[#E5BD72]'
+                            : 'text-slate-600'
                         }`}
                       />
                     </button>
                   ))}
                 </div>
                 {isRatingSaved && (
-                  <span className="flex items-center gap-1 text-xs text-emerald-400 font-medium ml-2 animate-fade-in">
+                  <span className="flex items-center gap-1 text-xs text-[#E5BD72] font-semibold ml-2">
                     <Check className="w-3.5 h-3.5" /> Saved!
                   </span>
                 )}
@@ -184,10 +184,10 @@ export default function MovieDetailsModal({
         </div>
 
         {/* Similar Movies Section (Content-Based ML) */}
-        <div className="p-6 sm:p-8 bg-slate-950/60 border-t border-slate-800">
+        <div className="p-6 sm:p-8 bg-[#101014]/60 border-t border-white/[0.08]">
           <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-4 h-4 text-violet-400" />
-            <h3 className="text-base font-bold text-white">
+            <Sparkles className="w-4 h-4 text-[#E5BD72]" />
+            <h3 className="text-base font-bold font-['Outfit'] text-[#F1E9DF]">
               Similar Movies (Content-Based AI)
             </h3>
           </div>

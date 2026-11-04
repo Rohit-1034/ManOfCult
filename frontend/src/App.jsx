@@ -167,7 +167,12 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080911] text-gray-100 flex flex-col font-sans selection:bg-violet-600 selection:text-white">
+    <div className="min-h-screen bg-[#101014] text-[#E2E8F0] flex flex-col font-sans selection:bg-[#A78BFA]/30 selection:text-[#F1E9DF] relative overflow-x-hidden">
+      {/* Warm Ambient Cinematic Lighting Blobs */}
+      <div className="fixed top-0 left-1/4 w-[650px] h-[450px] bg-[#30243B]/25 rounded-full blur-[140px] pointer-events-none -z-10" />
+      <div className="fixed top-1/3 right-10 w-[500px] h-[350px] bg-[#E5BD72]/8 rounded-full blur-[130px] pointer-events-none -z-10" />
+      <div className="fixed bottom-20 left-1/3 w-[550px] h-[400px] bg-[#30243B]/20 rounded-full blur-[150px] pointer-events-none -z-10" />
+
       {/* Universal Navigation with Mega Menu */}
       <Navbar
         currentView={currentView}
@@ -347,27 +352,27 @@ export default function App() {
         )}
       </main>
 
-      {/* Cinematic Global Footer */}
-      <footer className="mt-20 py-10 border-t border-slate-900 bg-slate-950 text-xs text-gray-500">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-1 text-center md:text-left">
-            <p className="font-semibold text-gray-400">
-              CineMatch AI – Complete Movie, Web Series, TV Shows, Anime & Documentary Discovery Platform
+      {/* Cinematic Frosted Glass Global Footer */}
+      <footer className="mt-20 py-10 border-t border-white/[0.07] bg-[#17151B]/80 backdrop-blur-xl text-xs text-gray-400">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-1.5 text-center md:text-left">
+            <p className="font-semibold text-[#F1E9DF] tracking-wide">
+              CineMatch <span className="text-[#A78BFA] font-mono text-xs">AI</span> – Complete Cinema, Web Series, TV & Anime Discovery
             </p>
-            <p className="text-[11px] text-gray-600">
-              Powered by the official TMDB (The Movie Database) API and Scikit-Learn Hybrid Inference Architecture.
+            <p className="text-[11px] text-gray-400">
+              Powered by the official TMDB (The Movie Database) streaming metadata with genuine posters and verified ratings.
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs">
-            <button onClick={() => setCurrentView('movies')} className="hover:text-amber-400 transition-colors">Movies</button>
-            <button onClick={() => setCurrentView('tv-shows')} className="hover:text-amber-400 transition-colors">TV Shows</button>
-            <button onClick={() => setCurrentView('web-series')} className="hover:text-amber-400 transition-colors">Web Series</button>
-            <button onClick={() => setCurrentView('anime')} className="hover:text-rose-400 transition-colors">Anime</button>
-            <button onClick={() => setCurrentView('documentaries')} className="hover:text-teal-400 transition-colors">Documentaries</button>
-            <button onClick={() => setCurrentView('trending')} className="hover:text-amber-400 transition-colors">Trending</button>
-            <button onClick={() => setCurrentView('mood')} className="hover:text-violet-400 transition-colors">Mood AI</button>
-            <button onClick={() => setCurrentView('admin')} className="hover:text-violet-400 transition-colors">Admin & ML</button>
+          <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-medium">
+            <button onClick={() => setCurrentView('movies')} className="text-gray-300 hover:text-[#E5BD72] transition-colors cursor-pointer">Movies</button>
+            <button onClick={() => setCurrentView('tv-shows')} className="text-gray-300 hover:text-[#E5BD72] transition-colors cursor-pointer">TV Shows</button>
+            <button onClick={() => setCurrentView('web-series')} className="text-gray-300 hover:text-[#E5BD72] transition-colors cursor-pointer">Web Series</button>
+            <button onClick={() => setCurrentView('anime')} className="text-gray-300 hover:text-[#A78BFA] transition-colors cursor-pointer">Anime</button>
+            <button onClick={() => setCurrentView('documentaries')} className="text-gray-300 hover:text-[#E5BD72] transition-colors cursor-pointer">Documentaries</button>
+            <button onClick={() => setCurrentView('trending')} className="text-gray-300 hover:text-[#E5BD72] transition-colors cursor-pointer">Trending</button>
+            <button onClick={() => setCurrentView('mood')} className="text-gray-300 hover:text-[#A78BFA] transition-colors cursor-pointer">Mood AI</button>
+            <button onClick={() => setCurrentView('admin')} className="text-gray-400 hover:text-[#A78BFA] transition-colors cursor-pointer">Admin & ML</button>
           </div>
         </div>
       </footer>

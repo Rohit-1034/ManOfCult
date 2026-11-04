@@ -154,62 +154,65 @@ export default function DashboardView({
         />
 
         {/* Based on Your Mood (Interactive 8-Mood Picker) */}
-        <section className="p-6 rounded-3xl bg-gradient-to-br from-slate-900/80 via-slate-900/50 to-violet-950/30 border border-slate-800">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-violet-950/60 border border-violet-800/40 flex items-center justify-center text-amber-400">
-                <Smile className="w-5 h-5 text-amber-400" />
-              </div>
-              <div>
-                <h2 className="text-xl md:text-2xl font-bold text-gray-100">
-                  Discover by Your Current Mood
-                </h2>
-                <p className="text-xs text-gray-400 mt-0.5">
-                  8 distinct emotional states mapped across movies and television series
-                </p>
+        <section className="glass-panel p-6 sm:p-8 rounded-3xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-[#30243B]/25 rounded-full blur-[90px] pointer-events-none" />
+          <div className="relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-[#E5BD72] shadow-[0_0_15px_rgba(229,189,114,0.15)]">
+                  <Smile className="w-5 h-5 text-[#E5BD72]" />
+                </div>
+                <div>
+                  <h2 className="text-xl md:text-2xl font-bold font-['Outfit'] text-[#F1E9DF] tracking-tight">
+                    Discover by Your Current Mood
+                  </h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    8 distinct emotional states mapped across movies and television series
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Mood Pills Selector */}
-          <div className="flex flex-wrap items-center gap-2 mb-6">
-            {[
-              { id: 'happy', label: '😊 Happy' },
-              { id: 'curious', label: '🧐 Curious' },
-              { id: 'excited', label: '⚡ Excited' },
-              { id: 'romantic', label: '💖 Romantic' },
-              { id: 'motivated', label: '🔥 Motivated' },
-              { id: 'relaxed', label: '🛋️ Relaxed' },
-              { id: 'scared', label: '😱 Scared' },
-              { id: 'sad', label: '🌧️ Melancholy' }
-            ].map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedMood(m.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
-                  selectedMood === m.id
-                    ? 'bg-amber-500 text-slate-950 border-amber-400 shadow-md shadow-amber-500/20'
-                    : 'bg-slate-900 text-gray-300 border-slate-800 hover:border-violet-600 hover:text-white'
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
-          </div>
+            {/* Mood Pills Selector */}
+            <div className="flex flex-wrap items-center gap-2 mb-6">
+              {[
+                { id: 'happy', label: '😊 Happy' },
+                { id: 'curious', label: '🧐 Curious' },
+                { id: 'excited', label: '⚡ Excited' },
+                { id: 'romantic', label: '💖 Romantic' },
+                { id: 'motivated', label: '🔥 Motivated' },
+                { id: 'relaxed', label: '🛋️ Relaxed' },
+                { id: 'scared', label: '😱 Scared' },
+                { id: 'sad', label: '🌧️ Melancholy' }
+              ].map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedMood(m.id)}
+                  className={`px-4 py-2 rounded-xl text-xs font-semibold tracking-wide transition-all border ${
+                    selectedMood === m.id
+                      ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold border-[#E5BD72] shadow-[0_0_20px_rgba(229,189,114,0.3)] scale-[1.03]'
+                      : 'bg-white/[0.04] text-slate-300 border-white/[0.08] hover:border-[#A78BFA]/40 hover:text-white hover:bg-white/[0.07]'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
 
-          {/* Live Mood Carousel */}
-          <ContentCarousel
-            title={`Titles for '${selectedMood.toUpperCase()}' Mood`}
-            subtitle="Curated titles resonating with your selected emotional vibe"
-            icon={Smile}
-            items={moodContent}
-            loading={moodContent.length === 0}
-            onSelect={handleSelect}
-            watchlistIds={watchlistIds}
-            onToggleWatchlist={onToggleWatchlist}
-            onViewAll={onNavigate ? () => onNavigate('mood') : undefined}
-            viewAllLabel="Full Mood AI Lab"
-          />
+            {/* Live Mood Carousel */}
+            <ContentCarousel
+              title={`Titles for '${selectedMood.toUpperCase()}' Mood`}
+              subtitle="Curated titles resonating with your selected emotional vibe"
+              icon={Smile}
+              items={moodContent}
+              loading={moodContent.length === 0}
+              onSelect={handleSelect}
+              watchlistIds={watchlistIds}
+              onToggleWatchlist={onToggleWatchlist}
+              onViewAll={onNavigate ? () => onNavigate('mood') : undefined}
+              viewAllLabel="Full Mood Lab"
+            />
+          </div>
         </section>
 
         {/* Trending TV Shows */}

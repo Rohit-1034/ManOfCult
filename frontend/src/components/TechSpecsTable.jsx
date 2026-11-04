@@ -9,53 +9,53 @@ export default function TechSpecsTable({ details }) {
     <div className="space-y-6">
       {/* Box Office & Production Credits */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Release Date</p>
-          <p className="text-sm font-semibold text-white mt-1">{details.releaseDate}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Release Date</p>
+          <p className="text-sm font-semibold text-[#F1E9DF] mt-1">{details.releaseDate}</p>
         </div>
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Country / Language</p>
-          <p className="text-sm font-semibold text-white mt-1">{details.countryOfOrigin} • {details.originalLanguage}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Country / Language</p>
+          <p className="text-sm font-semibold text-[#F1E9DF] mt-1">{details.countryOfOrigin} • {details.originalLanguage}</p>
         </div>
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Filming Locations</p>
-          <p className="text-sm font-semibold text-white mt-1 truncate">{details.filmingLocations}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Filming Locations</p>
+          <p className="text-sm font-semibold text-[#F1E9DF] mt-1 truncate">{details.filmingLocations}</p>
         </div>
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Estimated Budget</p>
-          <p className="text-sm font-semibold text-emerald-400 mt-1">{details.budgetEstimated}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Estimated Budget</p>
+          <p className="text-sm font-semibold text-[#E5BD72] mt-1">{details.budgetEstimated}</p>
         </div>
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Worldwide Gross</p>
-          <p className="text-sm font-semibold text-emerald-400 mt-1">{details.cumulativeWorldwideGross}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Worldwide Gross</p>
+          <p className="text-sm font-semibold text-[#E5BD72] mt-1">{details.cumulativeWorldwideGross}</p>
         </div>
-        <div className="bg-cinema-darker/50 border border-cinema-border/50 rounded-xl p-4">
-          <p className="text-xs uppercase tracking-wider text-gray-400 font-medium">Production Companies</p>
-          <p className="text-sm font-semibold text-white mt-1 truncate">{details.productionCompanies?.join(', ')}</p>
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase tracking-wider text-slate-400 font-medium">Production Companies</p>
+          <p className="text-sm font-semibold text-[#F1E9DF] mt-1 truncate">{details.productionCompanies?.join(', ')}</p>
         </div>
       </div>
 
       {/* Technical Specifications Table */}
-      <div className="bg-cinema-darker/40 border border-cinema-border/50 rounded-xl overflow-hidden">
-        <div className="px-5 py-3 border-b border-cinema-border/40 bg-cinema-darker/80">
-          <h4 className="text-sm font-bold text-gray-200 uppercase tracking-wider">Technical Specifications</h4>
+      <div className="glass-panel rounded-2xl overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-white/[0.08] bg-white/[0.02]">
+          <h4 className="text-sm font-bold font-['Outfit'] text-[#F1E9DF] uppercase tracking-wider">Technical Specifications</h4>
         </div>
-        <div className="divide-y divide-cinema-border/30 text-sm">
+        <div className="divide-y divide-white/[0.06] text-sm">
           <div className="grid grid-cols-3 px-5 py-3">
-            <span className="text-gray-400">Runtime</span>
-            <span className="col-span-2 text-white font-medium">{specs.runtime || 'N/A'}</span>
+            <span className="text-slate-400">Runtime</span>
+            <span className="col-span-2 text-[#F1E9DF] font-medium">{specs.runtime || 'N/A'}</span>
           </div>
           <div className="grid grid-cols-3 px-5 py-3">
-            <span className="text-gray-400">Aspect Ratio</span>
-            <span className="col-span-2 text-white font-medium">{specs.aspectRatio || '2.39:1'}</span>
+            <span className="text-slate-400">Aspect Ratio</span>
+            <span className="col-span-2 text-[#F1E9DF] font-medium">{specs.aspectRatio || '2.39:1'}</span>
           </div>
           <div className="grid grid-cols-3 px-5 py-3">
-            <span className="text-gray-400">Audio Mix</span>
-            <span className="col-span-2 text-white font-medium">{specs.audioMix || 'Dolby Atmos, Dolby Digital'}</span>
+            <span className="text-slate-400">Audio Mix</span>
+            <span className="col-span-2 text-[#F1E9DF] font-medium">{specs.audioMix || 'Dolby Atmos, Dolby Digital'}</span>
           </div>
           <div className="grid grid-cols-3 px-5 py-3">
-            <span className="text-gray-400">Color</span>
-            <span className="col-span-2 text-white font-medium">{specs.color || 'Color'}</span>
+            <span className="text-slate-400">Color</span>
+            <span className="col-span-2 text-[#F1E9DF] font-medium">{specs.color || 'Color'}</span>
           </div>
           <div className="grid grid-cols-3 px-5 py-3">
             <span className="text-gray-400">Cinematography Cameras</span>

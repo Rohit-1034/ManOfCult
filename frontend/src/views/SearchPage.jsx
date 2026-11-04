@@ -86,19 +86,19 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
       {/* Search Header Bar */}
       <div className="max-w-3xl mx-auto mb-8">
         <div className="relative flex items-center">
-          <Search className="w-5 h-5 text-gray-400 absolute left-4" />
+          <Search className="w-5 h-5 text-[#E5BD72] absolute left-4.5 pointer-events-none" />
           <input
             type="text"
             value={query}
             onChange={(e) => { setQuery(e.target.value); setPage(1); }}
             placeholder="Search movies, TV shows, anime, documentaries, actors, directors..."
-            className="w-full pl-12 pr-10 py-3.5 rounded-2xl bg-slate-900 border border-slate-800 text-sm md:text-base text-white placeholder-gray-500 focus:border-violet-500 outline-none transition-all shadow-xl"
+            className="glass-input w-full pl-12 pr-11 py-4 rounded-2xl text-sm md:text-base text-[#F1E9DF] placeholder-slate-400 font-medium"
             autoFocus
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-4 text-gray-500 hover:text-white"
+              className="absolute right-4 w-7 h-7 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-slate-400 hover:text-white flex items-center justify-center transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -107,11 +107,11 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-slate-900/60 p-4 rounded-2xl border border-slate-800 mb-8 flex flex-wrap items-center justify-between gap-4">
+      <div className="glass-panel p-4 md:p-5 rounded-2xl mb-8 flex flex-wrap items-center justify-between gap-4">
         {/* Content Type Filter */}
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mr-2 flex items-center gap-1">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-amber-400" />
+          <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-2 flex items-center gap-1.5">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#E5BD72]" />
             Filter:
           </span>
           {[
@@ -123,10 +123,10 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
             <button
               key={type.id}
               onClick={() => setTypeFilter(type.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
                 typeFilter === type.id
-                  ? 'bg-violet-600 text-white shadow-sm'
-                  : 'text-gray-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold border-[#E5BD72] shadow-[0_0_15px_rgba(229,189,114,0.25)]'
+                  : 'bg-white/[0.04] text-slate-300 border-white/[0.08] hover:bg-white/[0.08] hover:text-white'
               }`}
             >
               {type.label}
@@ -140,7 +140,7 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
           <select
             value={minRating}
             onChange={(e) => setMinRating(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-gray-300 focus:border-violet-500 outline-none"
+            className="px-3.5 py-1.5 rounded-xl bg-[#17151B]/90 border border-white/[0.1] text-xs text-slate-300 focus:border-[#A78BFA] outline-none backdrop-blur-md"
           >
             <option value="0">All Ratings</option>
             <option value="7">⭐ 7.0+ Rating</option>
@@ -152,7 +152,7 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
           <select
             value={yearFilter}
             onChange={(e) => setYearFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-gray-300 focus:border-violet-500 outline-none"
+            className="px-3.5 py-1.5 rounded-xl bg-[#17151B]/90 border border-white/[0.1] text-xs text-slate-300 focus:border-[#A78BFA] outline-none backdrop-blur-md"
           >
             <option value="all">All Years</option>
             <option value="2024+">2024 - 2026</option>
@@ -165,7 +165,7 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
           <select
             value={langFilter}
             onChange={(e) => setLangFilter(e.target.value)}
-            className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-xs text-gray-300 focus:border-violet-500 outline-none"
+            className="px-3.5 py-1.5 rounded-xl bg-[#17151B]/90 border border-white/[0.1] text-xs text-slate-300 focus:border-[#A78BFA] outline-none backdrop-blur-md"
           >
             <option value="all">All Languages</option>
             <option value="en">English</option>
@@ -202,23 +202,23 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
                         onSelectContent(item.knownFor[0]);
                       }
                     }}
-                    className="group relative flex flex-col rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-amber-500/50 transition-all p-3 text-center cursor-pointer hover:shadow-xl"
+                    className="group relative flex flex-col rounded-2xl overflow-hidden glass-card p-4 text-center cursor-pointer"
                   >
-                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-slate-800 border-2 border-slate-700 mb-3">
+                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-[#101014] border border-white/[0.12] mb-3 shadow-md group-hover:border-[#E5BD72]/50">
                       <img
                         src={item.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
                         alt={item.title}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform"
                       />
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-amber-400 mb-0.5">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5BD72] mb-0.5">
                       {item.knownForDepartment || 'Talent'}
                     </span>
-                    <h3 className="font-bold text-sm text-gray-100 truncate group-hover:text-amber-300">
+                    <h3 className="font-bold text-sm text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
                       {item.title}
                     </h3>
                     {item.knownFor && item.knownFor.length > 0 && (
-                      <p className="text-[11px] text-gray-500 line-clamp-1 mt-1">
+                      <p className="text-[11px] text-slate-400 line-clamp-1 mt-1">
                         Known for: {item.knownFor.map(k => k.title).join(', ')}
                       </p>
                     )}

@@ -386,8 +386,8 @@ export default function MovieDetailsView({
       </section>
 
       {/* Sticky Section Navigator */}
-      <div className="sticky top-28 z-20 bg-cinema-card/95 backdrop-blur-md border-y border-cinema-border/60 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center space-x-2 overflow-x-auto py-2 scrollbar-none text-xs md:text-sm font-semibold">
+      <div className="sticky top-28 z-20 glass-panel shadow-lg">
+        <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center space-x-2 overflow-x-auto py-2.5 scrollbar-none text-xs md:text-sm font-semibold">
           {[
             { id: 'popular', label: 'Cast & Popular', ref: popularRef },
             { id: 'storyline', label: 'Storyline', ref: storylineRef },
@@ -399,10 +399,10 @@ export default function MovieDetailsView({
             <button
               key={item.id}
               onClick={() => scrollToSection(item.ref, item.id)}
-              className={`px-4 py-1.5 rounded-lg whitespace-nowrap transition-all ${
+              className={`px-4 py-1.5 rounded-xl whitespace-nowrap transition-all border ${
                 activeTab === item.id
-                  ? 'bg-cinema-accent text-white shadow-md'
-                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold border-[#E5BD72] shadow-[0_0_15px_rgba(229,189,114,0.3)]'
+                  : 'bg-transparent border-transparent text-slate-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
               {item.label}
@@ -419,15 +419,16 @@ export default function MovieDetailsView({
 
           {/* Video Preview Card */}
           {movie.trailer?.embedUrl && (
-            <div className="mt-8 bg-gradient-to-r from-cinema-darker to-cinema-card border border-cinema-border/60 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
-              <div className="space-y-1">
-                <span className="text-xs uppercase font-bold tracking-wider text-red-400">Featured Video</span>
-                <h4 className="text-lg font-bold text-white">{movie.title} - Official Trailer</h4>
-                <p className="text-xs text-gray-400">Experience high-definition previews, teasers, and official behind-the-scenes clips.</p>
+            <div className="mt-8 glass-panel rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-[#30243B]/20 rounded-full blur-[90px] pointer-events-none" />
+              <div className="space-y-1 relative z-10">
+                <span className="text-xs uppercase font-bold tracking-wider text-[#E5BD72]">Featured Video</span>
+                <h4 className="text-lg font-bold font-['Outfit'] text-[#F1E9DF]">{movie.title} - Official Trailer</h4>
+                <p className="text-xs text-slate-400">Experience high-definition previews, teasers, and official behind-the-scenes clips.</p>
               </div>
               <button
                 onClick={() => setTrailerOpen(true)}
-                className="px-6 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-sm transition-colors flex items-center space-x-2 flex-shrink-0"
+                className="glass-btn-gold px-6 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center space-x-2 flex-shrink-0 cursor-pointer shadow-lg relative z-10"
               >
                 <span>▶ Play Video</span>
               </button>

@@ -47,23 +47,26 @@ export default function AnimePage({ onSelectContent, watchlistIds = [], onToggle
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-300">
       {/* Banner */}
-      <div className="relative rounded-3xl bg-gradient-to-r from-rose-950/70 via-slate-900 to-slate-950 p-6 md:p-10 border border-rose-800/40 mb-8 overflow-hidden shadow-2xl">
+      <div className="relative rounded-3xl glass-panel p-6 md:p-10 mb-8 overflow-hidden shadow-2xl">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-[#30243B]/30 rounded-full blur-[110px] pointer-events-none" />
+        <div className="absolute -bottom-10 right-1/4 w-80 h-80 bg-[#A78BFA]/10 rounded-full blur-[100px] pointer-events-none" />
+
         <div className="relative z-10 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-900/60 border border-rose-700/50 text-rose-300 text-xs font-bold mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-badge-lavender text-xs font-bold mb-3">
+            <Sparkles className="w-3.5 h-3.5 text-[#A78BFA]" />
             <span>ANIME DISCOVERY HUB</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight">
+          <h1 className="text-3xl md:text-5xl font-black font-['Outfit'] text-[#F1E9DF] tracking-tight">
             Japanese Animation & Anime
           </h1>
-          <p className="text-sm md:text-base text-gray-300 mt-2 leading-relaxed">
+          <p className="text-sm md:text-base text-slate-300 mt-2 leading-relaxed font-['Inter']">
             Discover legendary anime series, seasonal masterworks, shonen spectacles, and emotional masterpieces.
           </p>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-800 mb-8">
+      <div className="flex flex-wrap items-center gap-1.5 glass-panel p-1.5 rounded-2xl mb-8">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const active = activeTab === tab.id;
@@ -71,13 +74,13 @@ export default function AnimePage({ onSelectContent, watchlistIds = [], onToggle
             <button
               key={tab.id}
               onClick={() => { setActiveTab(tab.id); setPage(1); }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
                 active
-                  ? 'bg-rose-600 text-white shadow-md shadow-rose-600/30'
-                  : 'text-gray-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-gradient-to-r from-[#A78BFA] to-[#F1E9DF] text-[#101014] font-bold border-[#A78BFA] shadow-[0_0_15px_rgba(167,139,250,0.3)]'
+                  : 'bg-transparent border-transparent text-slate-400 hover:text-white hover:bg-white/[0.06]'
               }`}
             >
-              <Icon className="w-3.5 h-3.5 text-amber-400" />
+              <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#101014]' : 'text-[#E5BD72]'}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -88,7 +91,7 @@ export default function AnimePage({ onSelectContent, watchlistIds = [], onToggle
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
           {[...Array(15)].map((_, i) => (
-            <div key={i} className="aspect-[2/3] rounded-2xl bg-slate-900/80 animate-pulse border border-slate-800" />
+            <div key={i} className="aspect-[2/3] rounded-2xl bg-white/[0.04] animate-pulse border border-white/[0.06]" />
           ))}
         </div>
       ) : animeList.length > 0 ? (
@@ -108,8 +111,8 @@ export default function AnimePage({ onSelectContent, watchlistIds = [], onToggle
           })}
         </div>
       ) : (
-        <div className="py-20 text-center text-gray-500">
-          <p className="text-base font-semibold text-gray-400">No anime found</p>
+        <div className="py-20 text-center text-slate-500">
+          <p className="text-base font-semibold text-slate-400">No anime found</p>
         </div>
       )}
 
@@ -118,14 +121,14 @@ export default function AnimePage({ onSelectContent, watchlistIds = [], onToggle
         <button
           disabled={page <= 1}
           onClick={() => { setPage(p => Math.max(1, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-gray-300 disabled:opacity-40 hover:bg-slate-800"
+          className="glass-btn-secondary px-4 py-2 rounded-xl text-xs font-semibold disabled:opacity-30"
         >
           Previous Page
         </button>
-        <span className="text-xs text-gray-400 font-medium">Page {page}</span>
+        <span className="text-xs text-slate-400 font-medium">Page {page}</span>
         <button
           onClick={() => { setPage(p => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-          className="px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs font-semibold text-gray-300 hover:bg-slate-800"
+          className="glass-btn-secondary px-4 py-2 rounded-xl text-xs font-semibold"
         >
           Next Page
         </button>

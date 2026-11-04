@@ -53,99 +53,101 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-md rounded-3xl bg-slate-900 border border-violet-500/30 p-8 shadow-2xl shadow-violet-950/60 text-gray-100"
+        className="relative w-full max-w-md rounded-3xl bg-[#17151B]/95 border border-white/[0.12] p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] text-[#F1E9DF] overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[#30243B]/30 rounded-full blur-[80px] pointer-events-none" />
+
         <button
           onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-white hover:bg-slate-800 transition-colors"
+          className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/[0.06] hover:bg-white/[0.12] text-slate-400 hover:text-white flex items-center justify-center transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Header */}
-        <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-lg shadow-violet-600/30 mb-3">
-            <Sparkles className="w-6 h-6" />
+        <div className="text-center mb-6 relative z-10">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/[0.1] text-[#E5BD72] shadow-[0_0_20px_rgba(229,189,114,0.15)] mb-3">
+            <Sparkles className="w-6 h-6 text-[#E5BD72]" />
           </div>
-          <h2 className="text-2xl font-extrabold text-white">
+          <h2 className="text-2xl font-black font-['Outfit'] text-[#F1E9DF]">
             {mode === 'login' ? 'Welcome Back' : 'Create an Account'}
           </h2>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-xs text-slate-400 mt-1">
             {mode === 'login' ? 'Sign in to access your personalized recommendations' : 'Start discovering movies tailored to your taste'}
           </p>
         </div>
 
         {/* Tab switch */}
-        <div className="flex p-1 mb-6 rounded-xl bg-slate-950 border border-slate-800 text-xs font-semibold">
+        <div className="flex p-1 mb-6 rounded-xl bg-white/[0.04] border border-white/[0.08] text-xs font-semibold relative z-10">
           <button
             type="button"
             onClick={() => { setMode('login'); setError(''); }}
-            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'login' ? 'bg-violet-600 text-white shadow' : 'text-gray-400 hover:text-white'}`}
+            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'login' ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold shadow-md' : 'text-slate-400 hover:text-white'}`}
           >
             Sign In
           </button>
           <button
             type="button"
             onClick={() => { setMode('register'); setError(''); }}
-            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'register' ? 'bg-violet-600 text-white shadow' : 'text-gray-400 hover:text-white'}`}
+            className={`flex-1 py-2 rounded-lg transition-all ${mode === 'register' ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold shadow-md' : 'text-slate-400 hover:text-white'}`}
           >
             Register
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 rounded-xl bg-rose-950/50 border border-rose-500/40 text-rose-300 text-xs">
+          <div className="mb-4 p-3 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs relative z-10">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
           {mode === 'register' && (
             <div>
-              <label className="block text-xs font-semibold text-gray-300 mb-1">Username</label>
+              <label className="block text-xs font-semibold text-slate-300 mb-1">Username</label>
               <div className="relative">
-                <User className="w-4 h-4 text-gray-500 absolute left-3 top-3" />
+                <User className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
                 <input
                   type="text"
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="e.g. Cinephile99"
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                  className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-[#F1E9DF] placeholder-slate-500 outline-none transition-all"
                 />
               </div>
             </div>
           )}
 
           <div>
-            <label className="block text-xs font-semibold text-gray-300 mb-1">Email Address</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
             <div className="relative">
-              <Mail className="w-4 h-4 text-gray-500 absolute left-3 top-3" />
+              <Mail className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-[#F1E9DF] placeholder-slate-500 outline-none transition-all"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-gray-300 mb-1">Password</label>
+            <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
             <div className="relative">
-              <Lock className="w-4 h-4 text-gray-500 absolute left-3 top-3" />
+              <Lock className="w-4 h-4 text-slate-500 absolute left-3.5 top-3" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-800 focus:border-violet-500 focus:ring-1 focus:ring-violet-500 text-sm text-white placeholder-gray-600 outline-none transition-all"
+                className="glass-input w-full pl-10 pr-4 py-2.5 rounded-xl text-sm text-[#F1E9DF] placeholder-slate-500 outline-none transition-all"
               />
             </div>
           </div>
@@ -153,30 +155,30 @@ export default function AuthModal({ isOpen, onClose, onAuthSuccess, initialMode 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold text-sm shadow-lg shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
+            className="w-full py-3 rounded-xl glass-btn-gold font-bold text-sm shadow-lg transition-all cursor-pointer disabled:opacity-50"
           >
             {loading ? 'Processing...' : (mode === 'login' ? 'Sign In to CineMatch' : 'Complete Registration')}
           </button>
         </form>
 
         {/* Quick Demo Credentials */}
-        <div className="mt-6 pt-5 border-t border-slate-800/80">
-          <p className="text-[11px] text-center text-gray-500 mb-2">Quick One-Click Test Logins</p>
+        <div className="mt-6 pt-5 border-t border-white/[0.08] relative z-10">
+          <p className="text-[11px] text-center text-slate-400 mb-2 font-medium">Quick One-Click Test Logins</p>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => handleQuickLogin('admin')}
-              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-950 border border-violet-800/40 text-[11px] font-medium text-violet-300 hover:bg-violet-950/60 transition-colors"
+              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-white/[0.04] border border-[#E5BD72]/30 text-[11px] font-semibold text-[#E5BD72] hover:bg-white/[0.08] transition-colors"
             >
-              <Shield className="w-3 h-3 text-violet-400" />
+              <Shield className="w-3 h-3 text-[#E5BD72]" />
               <span>Admin Demo</span>
             </button>
             <button
               type="button"
               onClick={() => handleQuickLogin('user')}
-              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-slate-950 border border-slate-800 text-[11px] font-medium text-gray-300 hover:bg-slate-800 transition-colors"
+              className="flex-1 flex items-center justify-center gap-1.5 py-1.5 px-3 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[11px] font-medium text-slate-300 hover:bg-white/[0.08] transition-colors"
             >
-              <User className="w-3 h-3 text-gray-400" />
+              <User className="w-3 h-3 text-slate-400" />
               <span>User Demo</span>
             </button>
           </div>

@@ -78,13 +78,15 @@ export default function ReviewsSection({ movieId, reviewsData, onReviewSubmitted
   return (
     <div className="space-y-6">
       {/* Reviews Header & Score Summary */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-cinema-darker/60 border border-cinema-border/60 rounded-2xl p-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 glass-panel rounded-3xl p-6 md:p-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-[#30243B]/20 rounded-full blur-[90px] pointer-events-none" />
+
         {/* Left: Overall score */}
-        <div className="flex items-center space-x-5">
-          <div className="flex flex-col items-center justify-center w-24 h-24 rounded-2xl bg-gradient-to-br from-cinema-purple/30 to-cinema-accent/20 border border-cinema-purple/40 text-center">
-            <span className="text-3xl font-extrabold text-white">{avg > 0 ? avg : '—'}</span>
-            <span className="text-xs text-yellow-400 font-semibold tracking-wide">★★★★★</span>
-            <span className="text-[10px] text-gray-400 mt-0.5">{total} {total === 1 ? 'review' : 'reviews'}</span>
+        <div className="flex items-center space-x-5 relative z-10">
+          <div className="flex flex-col items-center justify-center w-24 h-24 rounded-2xl bg-white/[0.04] border border-white/[0.08] text-center shadow-[0_0_20px_rgba(229,189,114,0.15)]">
+            <span className="text-3xl font-black font-['Outfit'] text-[#F1E9DF]">{avg > 0 ? avg : '—'}</span>
+            <span className="text-xs text-[#E5BD72] font-semibold tracking-wide">★★★★★</span>
+            <span className="text-[10px] text-slate-400 mt-0.5">{total} {total === 1 ? 'review' : 'reviews'}</span>
           </div>
 
           {/* Rating Distribution Bars */}
@@ -94,14 +96,14 @@ export default function ReviewsSection({ movieId, reviewsData, onReviewSubmitted
               const percent = total > 0 ? Math.round((count / total) * 100) : 0;
               return (
                 <div key={star} className="flex items-center space-x-2 text-xs">
-                  <span className="w-5 text-gray-400 text-right">{star}★</span>
-                  <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <span className="w-5 text-slate-400 text-right">{star}★</span>
+                  <div className="flex-1 h-2 bg-white/[0.06] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-gradient-to-r from-yellow-500 to-cinema-accent rounded-full transition-all duration-500"
+                      className="h-full bg-gradient-to-r from-[#E5BD72] to-[#A78BFA] rounded-full transition-all duration-500"
                       style={{ width: `${percent}%` }}
                     />
                   </div>
-                  <span className="w-8 text-[11px] text-gray-500 text-right">{count}</span>
+                  <span className="w-8 text-[11px] text-slate-400 text-right">{count}</span>
                 </div>
               );
             })}
@@ -109,10 +111,10 @@ export default function ReviewsSection({ movieId, reviewsData, onReviewSubmitted
         </div>
 
         {/* Right: Write Review CTA */}
-        <div className="flex flex-col sm:flex-row items-center gap-3">
+        <div className="flex flex-col sm:flex-row items-center gap-3 relative z-10">
           <button
             onClick={handleStartReview}
-            className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cinema-purple to-cinema-accent hover:from-purple-600 hover:to-indigo-500 text-white font-semibold shadow-lg hover:shadow-cinema-accent/30 transition-all flex items-center justify-center space-x-2"
+            className="w-full sm:w-auto px-6 py-3 rounded-xl glass-btn-gold font-bold text-xs sm:text-sm shadow-lg transition-all flex items-center justify-center space-x-2 cursor-pointer"
           >
             <span>✍</span>
             <span>Write a Review</span>

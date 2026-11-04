@@ -18,21 +18,21 @@ export default function CastCarousel({ cast, crew }) {
       </div>
 
       {/* Cast Scrollable Row */}
-      <div className="flex space-x-4 overflow-x-auto pb-4 pt-1 scrollbar-thin scrollbar-thumb-cinema-purple/30">
+      <div className="flex space-x-4 overflow-x-auto pb-4 pt-1 scrollbar-thin">
         {cast.map((member, index) => (
           <div
             key={member.id || index}
-            className="flex-shrink-0 w-36 bg-cinema-darker/60 border border-cinema-border/60 hover:border-cinema-accent/40 rounded-xl p-3 text-center transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group"
+            className="flex-shrink-0 w-36 glass-card p-3.5 text-center group"
           >
             {/* Avatar Initials Badge / Portrait */}
-            <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-tr from-cinema-purple to-cinema-accent flex items-center justify-center text-white font-bold text-lg shadow-md group-hover:scale-105 transition-transform">
+            <div className="w-16 h-16 mx-auto mb-3 rounded-full bg-gradient-to-tr from-[#30243B] to-[#A78BFA] flex items-center justify-center text-[#F1E9DF] font-bold text-lg shadow-md group-hover:scale-105 transition-transform border border-white/[0.12]">
               {member.initials || member.name.slice(0, 2).toUpperCase()}
             </div>
             
-            <h4 className="text-sm font-semibold text-white truncate group-hover:text-cinema-accent transition-colors">
+            <h4 className="text-sm font-semibold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
               {member.name}
             </h4>
-            <p className="text-xs text-gray-400 truncate mt-0.5">
+            <p className="text-xs text-slate-400 truncate mt-0.5">
               {member.character}
             </p>
           </div>

@@ -62,27 +62,27 @@ export default function OnboardingModal({ isOpen, onClose, user, onPreferencesUp
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-xl animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-2xl rounded-3xl bg-slate-900 border border-violet-500/40 p-6 sm:p-8 shadow-2xl shadow-violet-950/70 text-gray-100 max-h-[90vh] overflow-y-auto"
+        className="relative w-full max-w-2xl rounded-3xl bg-[#17151B]/95 border border-white/[0.12] p-6 sm:p-8 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.85)] text-[#F1E9DF] max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="text-center mb-6">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-gradient-to-tr from-violet-600 to-indigo-500 text-white shadow-lg shadow-violet-600/30 mb-2">
-            <Sparkles className="w-6 h-6" />
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-white/[0.05] border border-white/[0.1] text-[#E5BD72] shadow-[0_0_20px_rgba(229,189,114,0.15)] mb-2">
+            <Sparkles className="w-6 h-6 text-[#E5BD72]" />
           </div>
-          <h2 className="text-2xl font-extrabold text-white">Personalize Your CineMatch Taste</h2>
-          <p className="text-xs text-gray-400 mt-1 max-w-md mx-auto">
+          <h2 className="text-2xl font-black font-['Outfit'] text-[#F1E9DF]">Personalize Your CineMatch Taste</h2>
+          <p className="text-xs text-slate-400 mt-1 max-w-md mx-auto">
             Choose at least 2 genres and any movies you love. Our Hybrid Recommendation Engine uses these signals to calibrate your personalized watch feed.
           </p>
         </div>
 
         {/* 1. Genres */}
         <div className="mb-6">
-          <h3 className="text-sm font-bold text-gray-200 mb-3 flex items-center gap-2">
-            <Film className="w-4 h-4 text-violet-400" />
+          <h3 className="text-sm font-bold font-['Outfit'] text-[#F1E9DF] mb-3 flex items-center gap-2">
+            <Film className="w-4 h-4 text-[#E5BD72]" />
             <span>Select Favorite Genres</span>
-            <span className="text-xs font-normal text-violet-400 font-mono">({selectedGenres.length} selected)</span>
+            <span className="text-xs font-normal text-[#E5BD72] font-mono">({selectedGenres.length} selected)</span>
           </h3>
 
           <div className="flex flex-wrap gap-2">
@@ -93,10 +93,10 @@ export default function OnboardingModal({ isOpen, onClose, user, onPreferencesUp
                   key={genre}
                   type="button"
                   onClick={() => toggleGenre(genre)}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all border ${
                     active
-                      ? 'bg-violet-600 text-white shadow-lg shadow-violet-600/30 border border-violet-500'
-                      : 'bg-slate-950 text-gray-400 hover:text-white hover:bg-slate-800 border border-slate-800'
+                      ? 'bg-gradient-to-r from-[#E5BD72] to-[#F1E9DF] text-[#101014] font-bold border-[#E5BD72] shadow-[0_0_15px_rgba(229,189,114,0.3)]'
+                      : 'bg-white/[0.04] text-slate-300 hover:text-white hover:bg-white/[0.08] border-white/[0.08]'
                   }`}
                 >
                   {active && <Check className="w-3.5 h-3.5" />}
@@ -109,8 +109,8 @@ export default function OnboardingModal({ isOpen, onClose, user, onPreferencesUp
 
         {/* 2. Favorite Movies Seeds */}
         <div className="mb-8">
-          <h3 className="text-sm font-bold text-gray-200 mb-3 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-amber-400" />
+          <h3 className="text-sm font-bold font-['Outfit'] text-[#F1E9DF] mb-3 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#A78BFA]" />
             <span>Favorite Movie Seeds (Optional)</span>
           </h3>
 
@@ -124,15 +124,15 @@ export default function OnboardingModal({ isOpen, onClose, user, onPreferencesUp
                   onClick={() => toggleMovie(movie.movieId)}
                   className={`p-2.5 rounded-xl text-left border text-xs transition-all flex items-center justify-between ${
                     active
-                      ? 'bg-violet-950/70 border-violet-500 text-white shadow'
-                      : 'bg-slate-950 border-slate-800/80 text-gray-400 hover:bg-slate-800 hover:text-gray-200'
+                      ? 'bg-[#30243B] border-[#A78BFA]/50 text-[#F1E9DF] shadow'
+                      : 'bg-white/[0.03] border-white/[0.07] text-slate-400 hover:bg-white/[0.07] hover:text-slate-200'
                   }`}
                 >
                   <div className="truncate pr-1">
-                    <p className="font-semibold truncate">{movie.title}</p>
-                    <p className="text-[10px] text-gray-500">{movie.genre}</p>
+                    <p className="font-semibold truncate text-[#F1E9DF]">{movie.title}</p>
+                    <p className="text-[10px] text-slate-400">{movie.genre}</p>
                   </div>
-                  {active && <Check className="w-3.5 h-3.5 text-violet-400 flex-shrink-0" />}
+                  {active && <Check className="w-3.5 h-3.5 text-[#E5BD72] flex-shrink-0" />}
                 </button>
               );
             })}
@@ -143,10 +143,10 @@ export default function OnboardingModal({ isOpen, onClose, user, onPreferencesUp
         <button
           onClick={handleSave}
           disabled={saving || selectedGenres.length === 0}
-          className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-bold text-sm shadow-xl shadow-violet-600/30 transition-all cursor-pointer disabled:opacity-50"
+          className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl glass-btn-gold font-bold text-sm shadow-xl transition-all cursor-pointer disabled:opacity-50"
         >
           <span>{saving ? 'Calibrating...' : 'Save Preferences & Discover Movies'}</span>
-          <ArrowRight className="w-4 h-4" />
+          <ArrowRight className="w-4 h-4 text-[#101014]" />
         </button>
       </div>
     </div>

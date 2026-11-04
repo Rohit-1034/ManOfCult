@@ -17,7 +17,7 @@ export default function MegaMenu({ isOpen, onClose, onNavigate }) {
       className="fixed inset-x-0 top-16 z-50 px-4 md:px-8 py-6 pointer-events-auto transition-all animate-in fade-in slide-in-from-top-2 duration-200"
       onMouseLeave={onClose}
     >
-      <div className="max-w-7xl mx-auto rounded-2xl bg-[#0c0e1a]/95 backdrop-blur-2xl border border-violet-900/40 shadow-2xl shadow-violet-950/50 p-6 md:p-8">
+      <div className="max-w-7xl mx-auto rounded-3xl bg-[#17151B]/92 backdrop-blur-2xl border border-white/[0.08] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7),inset_0_1px_0_rgba(255,255,255,0.08)] p-6 md:p-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           
           {/* Column 1: MOVIES */}
