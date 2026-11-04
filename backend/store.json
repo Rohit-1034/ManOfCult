@@ -7,12 +7,9 @@
       "passwordHash": "$2b$10$3VXSzb0hNd42nWGEwbsr2u7aMby9aKcc3nuiygjnCcQSBkY1gUv3a",
       "favoriteGenres": [
         "Sci-Fi",
-        "Action",
-        "Drama"
+        "Action"
       ],
       "favoriteMovies": [
-        1,
-        260,
         2571
       ],
       "role": "admin",
@@ -114,5 +111,5 @@
     }
   ],
   "feedback": [],
-  "updatedAt": "2026-11-04T20:10:59.293Z"
+  "updatedAt": "2026-11-04T20:57:07.455Z"
 }

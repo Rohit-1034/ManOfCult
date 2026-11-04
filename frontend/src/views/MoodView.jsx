@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Smile, Sparkles, Send, Coffee, Heart, Zap, Ghost, Trophy, CloudRain, 
-  Film, Tv, Compass, RefreshCw, X
+  Sparkles, Send, Film, Tv, Compass, X 
 } from 'lucide-react';
 import ContentCard from '../components/ContentCard';
 import recommendationService from '../services/recommendationService';
@@ -80,18 +79,22 @@ export default function MoodView({
   const [loading, setLoading] = useState(false);
   const [activeMoodTitle, setActiveMoodTitle] = useState('Happy & Upbeat');
 
+  // Gemini API Key from storage if present
+  const [geminiKey] = useState(() => localStorage.getItem('cinematch_gemini_key') || '');
+
   const handleSelect = (item) => {
     if (onSelectContent) onSelectContent(item);
     else if (onSelectMovie) onSelectMovie(item);
   };
 
-  const fetchMoodRecommendations = (moodId, freeText = '', type = mediaType) => {
+  const fetchMoodRecommendations = (moodId, freeText = '', type = mediaType, keyToUse = geminiKey) => {
     setLoading(true);
     recommendationService.getMoodRecommendations({
       mood: moodId,
       prompt: freeText,
       mediaType: type,
-      topK: 18
+      topK: 18,
+      geminiApiKey: keyToUse
     })
       .then((recs) => {
         setRecommendations(recs || []);
@@ -104,32 +107,32 @@ export default function MoodView({
   };
 
   useEffect(() => {
-    fetchMoodRecommendations('happy', '', mediaType);
+    fetchMoodRecommendations('happy', '', mediaType, geminiKey);
   }, []);
 
   const handleSelectMood = (m) => {
     setSelectedMood(m.id);
     setActiveMoodTitle(m.label);
-    fetchMoodRecommendations(m.id, prompt, mediaType);
+    fetchMoodRecommendations(m.id, prompt, mediaType, geminiKey);
   };
 
   const handleMediaTypeChange = (type) => {
     setMediaType(type);
-    fetchMoodRecommendations(selectedMood, prompt, type);
+    fetchMoodRecommendations(selectedMood, prompt, type, geminiKey);
   };
 
   const handlePromptSubmit = (e) => {
     e.preventDefault();
     if (!prompt.trim() && !selectedMood) return;
     setActiveMoodTitle(prompt ? `"${prompt.trim()}"` : selectedMood);
-    fetchMoodRecommendations(selectedMood, prompt.trim(), mediaType);
+    fetchMoodRecommendations(selectedMood, prompt.trim(), mediaType, geminiKey);
   };
 
   const handleClearPrompt = () => {
     setPrompt('');
     const activeObj = MOODS.find(m => m.id === selectedMood);
     setActiveMoodTitle(activeObj ? activeObj.label : 'Happy & Upbeat');
-    fetchMoodRecommendations(selectedMood, '', mediaType);
+    fetchMoodRecommendations(selectedMood, '', mediaType, geminiKey);
   };
 
   const activeMoodObj = MOODS.find(m => m.id === selectedMood);
@@ -137,17 +140,10 @@ export default function MoodView({
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8 animate-in fade-in duration-300">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-violet-950/80 border border-violet-500/40 text-violet-300 text-xs font-semibold mb-4 shadow-lg shadow-violet-950/40">
-          <Smile className="w-3.5 h-3.5 text-amber-400" />
-          <span>Mood-Based AI Discovery</span>
-        </div>
+      <div className="text-center max-w-2xl mx-auto space-y-3">
         <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
           How Are You Feeling Tonight?
         </h1>
-        <p className="text-xs sm:text-sm text-gray-400 mt-2 leading-relaxed">
-          Select an emotional vibe or type your exact mood in plain English. Our AI analyzes narrative themes, keywords, ratings, and genre nuances to match your vibe.
-        </p>
       </div>
 
       {/* 8-Mood Selector Grid */}
@@ -182,14 +178,14 @@ export default function MoodView({
             type="text"
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Or describe your exact mood... (e.g. 'mind-bending sci-fi mystery with rainy dark atmosphere')"
+            placeholder="Describe what you want to feel... (e.g. 'exhausted after work, need cozy comedy with good friends')"
             className="w-full pl-11 pr-32 py-3.5 rounded-2xl bg-slate-900 border border-slate-700/80 focus:border-amber-400 text-sm text-white placeholder-gray-500 outline-none shadow-xl transition-all"
           />
           {prompt && (
             <button
               type="button"
               onClick={handleClearPrompt}
-              className="absolute right-24 top-3.5 text-gray-400 hover:text-white p-1"
+              className="absolute right-28 top-3.5 text-gray-400 hover:text-white p-1"
               title="Clear"
             >
               <X className="w-4 h-4" />
@@ -200,7 +196,7 @@ export default function MoodView({
             disabled={loading}
             className="absolute right-2 top-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-black text-xs shadow-md shadow-amber-500/20 transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
           >
-            <span>Ask AI</span>
+            <span>Search</span>
             <Send className="w-3 h-3" />
           </button>
         </form>
@@ -261,7 +257,7 @@ export default function MoodView({
         ) : recommendations.length > 0 ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
             {recommendations.map((item) => (
-              <div key={item.contentId || item.id || `${item.mediaType}_${item.tmdbId || item.movieId}`} className="flex flex-col space-y-1.5">
+              <div key={item.contentId || item.id || `${item.mediaType}_${item.tmdbId || item.movieId}`} className="flex flex-col">
                 <ContentCard
                   item={item}
                   onSelect={handleSelect}
@@ -269,11 +265,6 @@ export default function MoodView({
                   onToggleWatchlist={onToggleWatchlist}
                   showCategoryBadge={true}
                 />
-                {item.explanation && (
-                  <p className="text-[11px] text-amber-300/80 line-clamp-1 px-1 font-medium italic">
-                    {item.explanation}
-                  </p>
-                )}
               </div>
             ))}
           </div>

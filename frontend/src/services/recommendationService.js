@@ -21,8 +21,10 @@ export const recommendationService = {
     }
   },
 
-  // 8-Mood Recommendations
-  async getMoodRecommendations({ mood, prompt = '', mediaType = 'all', topK = 12, excludeIds = [] }) {
+  // 8-Mood Recommendations (Google Gemini API + ML Model)
+  async getMoodRecommendations({ mood, prompt = '', mediaType = 'all', topK = 12, excludeIds = [], geminiApiKey = null }) {
+    const key = geminiApiKey || localStorage.getItem('cinematch_gemini_key') || '';
+
     // 1. Try Backend API Proxy first
     try {
       const res = await axios.post(`${BACKEND_URL}/recommendations/mood`, {
@@ -30,9 +32,21 @@ export const recommendationService = {
         prompt,
         mediaType,
         topK,
-        excludeIds
-      }, { timeout: 6000 });
-      return res.data.recommendations || [];
+        excludeIds,
+        geminiApiKey: key
+      }, {
+        headers: key ? { 'x-gemini-api-key': key } : {},
+        timeout: 18000
+      });
+
+      const data = res.data || {};
+      const recs = data.recommendations || [];
+      // Attach metadata properties directly to the array for backward compatibility
+      recs.emotionalSummary = data.emotionalSummary || '';
+      recs.detectedMood = data.detectedMood || mood;
+      recs.geminiActive = Boolean(data.geminiActive);
+      recs.provider = data.provider || 'AI Model';
+      return recs;
     } catch (backendErr) {
       // 2. Fallback to direct ML Service
       try {
@@ -43,11 +57,34 @@ export const recommendationService = {
           topK,
           excludeIds
         }, { timeout: 6000 });
-        return res.data.recommendations || [];
+        const recs = res.data?.recommendations || [];
+        recs.geminiActive = false;
+        recs.provider = 'Scikit-Learn ML Inference';
+        return recs;
       } catch (err) {
         console.warn('Mood recommendation fetch error:', err.message);
         return [];
       }
+    }
+  },
+
+  // Universal Natural Language AI Suggestions (Google Gemini 3.5 Flash)
+  async getAISuggestions({ query, mediaType = 'all', topK = 10, geminiApiKey = null }) {
+    const key = geminiApiKey || localStorage.getItem('cinematch_gemini_key') || '';
+    try {
+      const res = await axios.post(`${BACKEND_URL}/recommendations/ai-suggest`, {
+        query,
+        mediaType,
+        topK,
+        geminiApiKey: key
+      }, {
+        headers: key ? { 'x-gemini-api-key': key } : {},
+        timeout: 18000
+      });
+      return res.data || { recommendations: [] };
+    } catch (err) {
+      console.warn('AI suggestions error:', err.message);
+      return { recommendations: [], success: false };
     }
   },
 

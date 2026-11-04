@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, Play, Info, Plus, Check, Film, Sparkles } from 'lucide-react';
+import { Star, Play, Info, Plus, Check, Film } from 'lucide-react';
 import { getBackdropUrl, getPosterUrl } from '../../services/tmdbService';
 
 export default function TrendingSlide({
@@ -10,7 +10,6 @@ export default function TrendingSlide({
   inWatchlist,
   onToggleWatchlist
 }) {
-  const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
   if (!movie) return null;
@@ -38,11 +37,8 @@ export default function TrendingSlide({
             src={backdropSrc}
             alt={movie.title}
             loading={isActive ? 'eager' : 'lazy'}
-            onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
-            className={`w-full h-full object-cover object-top sm:object-[center_25%] transition-all duration-1000 ease-out ${
-              imageLoaded ? 'scale-100 blur-0 opacity-80 sm:opacity-85' : 'scale-105 blur-sm opacity-0'
-            }`}
+            className="w-full h-full object-cover object-top sm:object-[center_25%] opacity-80 sm:opacity-85 transition-transform duration-1000 ease-out"
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-slate-900 via-violet-950/40 to-slate-950 opacity-60" />
@@ -51,7 +47,7 @@ export default function TrendingSlide({
         {/* Gradient Overlays for Maximum Legibility */}
         {/* Left-to-right dark gradient */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#080911] via-[#080911]/90 via-55% to-transparent w-full md:w-4/5 lg:w-3/5" />
-        {/* Subtle right fade to soften bright backdrop highlights */}
+        {/* Right softening */}
         <div className="absolute inset-0 bg-gradient-to-l from-[#080911]/40 via-transparent to-transparent hidden md:block" />
         {/* Bottom-to-top gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#080911] via-[#080911]/50 via-40% to-transparent" />
@@ -61,7 +57,9 @@ export default function TrendingSlide({
 
       {/* Slide Content Box */}
       <div className="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-end pb-16 sm:pb-20 lg:pb-24">
-        <div className="max-w-2xl lg:max-w-3xl space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className={`max-w-2xl lg:max-w-3xl space-y-4 transition-all duration-700 transform ${
+          isActive ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+        }`}>
           
           {/* Metadata Badges Row */}
           <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">

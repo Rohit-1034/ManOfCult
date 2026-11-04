@@ -62,3 +62,16 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+@keyframes heroProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-hero-progress {
+  animation: heroProgress 5s linear forwards;
+}

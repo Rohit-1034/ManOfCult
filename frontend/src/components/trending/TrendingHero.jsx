@@ -13,7 +13,8 @@ export default function TrendingHero({
 }) {
   const { movies, loading, error } = useTrendingMovies('week', 8);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [timerKey, setTimerKey] = useState(0);
 
   // Trailer modal state
   const [trailerModalOpen, setTrailerModalOpen] = useState(false);
@@ -27,32 +28,40 @@ export default function TrendingHero({
 
   const totalSlides = movies.length;
 
+  const resetTimer = useCallback(() => {
+    setTimerKey(prev => prev + 1);
+  }, []);
+
   const nextSlide = useCallback(() => {
     if (totalSlides === 0) return;
     setCurrentIndex(prev => (prev + 1) % totalSlides);
-  }, [totalSlides]);
+    resetTimer();
+  }, [totalSlides, resetTimer]);
 
   const prevSlide = useCallback(() => {
     if (totalSlides === 0) return;
     setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
-  }, [totalSlides]);
+    resetTimer();
+  }, [totalSlides, resetTimer]);
 
   const selectSlide = useCallback((index) => {
     if (index >= 0 && index < totalSlides) {
       setCurrentIndex(index);
+      resetTimer();
     }
-  }, [totalSlides]);
+  }, [totalSlides, resetTimer]);
 
-  // 5-second auto-slide interval (paused on hover or when trailer modal is open)
+  // Guaranteed 5-second automatic sliding timer
   useEffect(() => {
-    if (totalSlides <= 1 || isHovered || trailerModalOpen) return;
+    if (totalSlides <= 1 || isPaused || trailerModalOpen) return;
 
-    const timer = setInterval(() => {
-      nextSlide();
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % totalSlides);
+      resetTimer();
     }, 5000);
 
-    return () => clearInterval(timer);
-  }, [totalSlides, isHovered, trailerModalOpen, nextSlide]);
+    return () => clearInterval(interval);
+  }, [totalSlides, isPaused, trailerModalOpen, timerKey, resetTimer]);
 
   // Keyboard navigation support
   useEffect(() => {
@@ -77,13 +86,10 @@ export default function TrendingHero({
     const deltaX = touchStartX.current - e.changedTouches[0].clientX;
     const deltaY = touchStartY.current - e.changedTouches[0].clientY;
 
-    // Detect horizontal swipe if deltaX is significantly larger than deltaY
     if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
       if (deltaX > 0) {
-        // Swiped left -> next slide
         nextSlide();
       } else {
-        // Swiped right -> previous slide
         prevSlide();
       }
     }
@@ -109,7 +115,6 @@ export default function TrendingHero({
         setCurrentTrailer(trailer);
         setTrailerModalOpen(true);
       } else {
-        // Fallback: build YouTube search trailer embed
         setCurrentTrailer({
           embedUrl: `https://www.youtube-nocookie.com/embed?q=${encodeURIComponent(movie.title + ' Official Trailer')}`,
           title: `${movie.title} Trailer`
@@ -162,8 +167,6 @@ export default function TrendingHero({
   return (
     <section
       aria-label="Trending Movies Hero Carousel"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       className="relative w-full h-[580px] sm:h-[650px] lg:h-[720px] bg-slate-950 overflow-hidden group select-none"
@@ -189,6 +192,9 @@ export default function TrendingHero({
           onPrev={prevSlide}
           onNext={nextSlide}
           onSelectIndex={selectSlide}
+          isPaused={isPaused}
+          onTogglePause={() => setIsPaused(prev => !prev)}
+          timerKey={timerKey}
         />
       </div>
 
