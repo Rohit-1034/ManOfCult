@@ -1,0 +1,19 @@
+{
+  "name": "cinematch-ai",
+  "version": "1.0.0",
+  "description": "CineMatch AI - Smart Movie Recommendation System",
+  "scripts": {
+    "dev": "concurrently -k -n \"FRONTEND,BACKEND,ML\" -c \"magenta,blue,green\" \"npm --prefix frontend run dev\" \"npm --prefix backend run dev\" \"python -m uvicorn main:app --app-dir ml-service --host 0.0.0.0 --port 8000 --reload\"",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:ml": "python -m uvicorn main:app --app-dir ml-service --host 0.0.0.0 --port 8000 --reload",
+    "build": "npm --prefix frontend run build",
+    "test": "python ml-service/test_suite.py",
+    "test:imdb": "node test_imdb_details.js",
+    "test:integration": "node test_integration.js",
+    "preprocess": "python ml-service/preprocess.py"
+  },
+  "dependencies": {
+    "concurrently": "^10.0.6"
+  }
+}

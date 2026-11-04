@@ -1,0 +1,118 @@
+{
+  "users": [
+    {
+      "id": "5263f42f-9aa8-4080-b93d-2c44223be484",
+      "username": "CineMatchAdmin",
+      "email": "admin@cinematch.ai",
+      "passwordHash": "$2b$10$3VXSzb0hNd42nWGEwbsr2u7aMby9aKcc3nuiygjnCcQSBkY1gUv3a",
+      "favoriteGenres": [
+        "Sci-Fi",
+        "Action",
+        "Drama"
+      ],
+      "favoriteMovies": [
+        1,
+        260,
+        2571
+      ],
+      "role": "admin",
+      "createdAt": "2026-11-04T17:34:35.852Z"
+    },
+    {
+      "id": "8c8a2d78-9859-49b0-a05e-eb22271d8e57",
+      "username": "Cinephile",
+      "email": "user@cinematch.ai",
+      "passwordHash": "$2b$10$CZtyFk/v8ME/lPLwPT0eF.qxmi.ss6a6SspxoRm.2ssVOIj9jAXpG",
+      "favoriteGenres": [
+        "Sci-Fi",
+        "Action"
+      ],
+      "favoriteMovies": [
+        2571
+      ],
+      "role": "user",
+      "createdAt": "2026-11-04T17:38:34.718Z"
+    }
+  ],
+  "ratings": [
+    {
+      "id": "8f5c64c2-ebfd-4070-86db-c3a229552572",
+      "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
+      "movieId": 1,
+      "rating": 5,
+      "createdAt": "2026-11-04T18:27:56.598Z",
+      "updatedAt": "2026-11-04T19:43:35.954Z",
+      "mediaType": "movie",
+      "contentId": "movie_1"
+    }
+  ],
+  "watchlists": [
+    {
+      "userId": "8c8a2d78-9859-49b0-a05e-eb22271d8e57",
+      "movieIds": [
+        200001
+      ],
+      "updatedAt": "2026-11-04T20:03:47.332Z"
+    },
+    {
+      "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
+      "movieIds": [
+        200041
+      ],
+      "updatedAt": "2026-11-04T20:03:22.377Z"
+    },
+    {
+      "userId": "mood",
+      "movieIds": [],
+      "updatedAt": "2026-11-04T20:10:59.293Z"
+    }
+  ],
+  "watchlistItems": [
+    {
+      "id": "9da80f10-2b5f-400c-9f71-6b4d7d776718",
+      "userId": "8c8a2d78-9859-49b0-a05e-eb22271d8e57",
+      "contentId": "movie_200001",
+      "mediaType": "movie",
+      "movieId": 200001,
+      "tmdbId": 200001,
+      "title": null,
+      "posterPath": null,
+      "status": "watchlist",
+      "addedAt": "2026-11-04T19:41:24.209Z",
+      "updatedAt": "2026-11-04T19:41:24.209Z"
+    },
+    {
+      "id": "3965c849-9834-495d-994c-0e5ab7d739d9",
+      "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
+      "contentId": "movie_200041",
+      "mediaType": "movie",
+      "movieId": 200041,
+      "tmdbId": 200041,
+      "title": null,
+      "posterPath": null,
+      "status": "watchlist",
+      "addedAt": "2026-11-04T20:03:18.790Z",
+      "updatedAt": "2026-11-04T20:03:18.790Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "6b1a3c11-42a0-40b5-823e-b631365f55fe",
+      "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
+      "username": "CineMatchAdmin",
+      "movieId": 1,
+      "rating": 5,
+      "headline": "A Timeless Animated Masterpiece",
+      "review": "Brilliant characters, groundbreaking animation, and endless heart.",
+      "containsSpoilers": false,
+      "helpfulCount": 1,
+      "helpfulUsers": [
+        "5263f42f-9aa8-4080-b93d-2c44223be484"
+      ],
+      "createdAt": "2026-11-04T18:27:09.805Z",
+      "updatedAt": "2026-11-04T19:43:35.953Z"
+    }
+  ],
+  "feedback": [],
+  "updatedAt": "2026-11-04T20:10:59.293Z"
+}
