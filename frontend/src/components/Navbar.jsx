@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Film, Tv, Sparkles, Compass, Smile, Bookmark, User, 
-  Shield, LogOut, Search, Star, X, Menu, ChevronDown, Video, Flame 
+  Film, Tv, Sparkles, Bookmark, User, 
+  Shield, LogOut, Search, Star, X, Menu, ChevronDown 
 } from 'lucide-react';
 import tmdbService from '../services/tmdbService';
 import ContentPoster from './ContentPoster';
@@ -16,12 +16,14 @@ export default function Navbar({
   onLogout,
   onQuickSearch,
   onSelectMovie,
-  onSelectContent
+  onSelectContent,
+  onSelectPerson
 }) {
   const [navSearch, setNavSearch] = useState('');
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [searchLoading, setSearchLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchContainerRef = useRef(null);
 
@@ -29,16 +31,20 @@ export default function Navbar({
   useEffect(() => {
     if (!navSearch.trim() || navSearch.trim().length < 2) {
       setSuggestions([]);
+      setSearchLoading(false);
       return;
     }
 
+    setSearchLoading(true);
     const timer = setTimeout(async () => {
       try {
         const results = await tmdbService.multiSearch(navSearch.trim());
-        setSuggestions((results || []).slice(0, 6));
+        setSuggestions((results || []).slice(0, 8));
         setShowSuggestions(true);
       } catch (e) {
         setSuggestions([]);
+      } finally {
+        setSearchLoading(false);
       }
     }, 200);
 
@@ -73,7 +79,14 @@ export default function Navbar({
   const handleSuggestionClick = (item) => {
     setShowSuggestions(false);
     setNavSearch('');
-    if (onSelectContent) {
+    if (item.mediaType === 'person') {
+      const pId = item.tmdbId || item.id;
+      if (onSelectPerson) {
+        onSelectPerson(pId);
+      } else if (onSelectContent) {
+        onSelectContent(item);
+      }
+    } else if (onSelectContent) {
       onSelectContent(item);
     } else if (onSelectMovie) {
       onSelectMovie(item);
@@ -89,14 +102,14 @@ export default function Navbar({
   };
 
   const primaryNavItems = [
-    { id: 'dashboard', label: 'Home', icon: Sparkles, authRequired: false },
-    { id: 'movies', label: 'Movies', icon: Film, authRequired: false },
-    { id: 'tv-shows', label: 'TV Shows', icon: Tv, authRequired: false },
-    { id: 'web-series', label: 'Web Series', icon: Video, authRequired: false },
-    { id: 'anime', label: 'Anime', icon: Sparkles, authRequired: false },
-    { id: 'trending', label: 'Trending', icon: Flame, authRequired: false },
-    { id: 'mood', label: 'Mood AI', icon: Smile, authRequired: false },
-    { id: 'watchlist', label: 'Watchlist', icon: Bookmark, authRequired: true },
+    { id: 'dashboard', label: 'Home', authRequired: false },
+    { id: 'movies', label: 'Movies', authRequired: false },
+    { id: 'tv-shows', label: 'TV Shows', authRequired: false },
+    { id: 'web-series', label: 'Web Series', authRequired: false },
+    { id: 'anime', label: 'Anime', authRequired: false },
+    { id: 'trending', label: 'Trending', authRequired: false },
+    { id: 'mood', label: 'Mood AI', authRequired: false },
+    { id: 'watchlist', label: 'Watchlist', authRequired: true },
   ];
 
   return (
@@ -141,7 +154,6 @@ export default function Navbar({
           {/* Center: Desktop Nav Pills */}
           <div className="hidden xl:flex items-center gap-1 bg-white/[0.04] backdrop-blur-xl px-2 py-1 rounded-2xl border border-white/[0.07]">
             {primaryNavItems.map((item) => {
-              const Icon = item.icon;
               const active = currentView === item.id;
               return (
                 <button
@@ -153,14 +165,13 @@ export default function Navbar({
                       setCurrentView(item.id);
                     }
                   }}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all cursor-pointer text-center ${
                     active
-                      ? 'bg-gradient-to-r from-[#30243B] to-[#251D30] text-[#F1E9DF] border border-[#A78BFA]/30 shadow-md'
+                      ? 'bg-gradient-to-r from-[#30243B] to-[#251D30] text-[#F1E9DF] border border-[#A78BFA]/30 shadow-md font-bold'
                       : 'text-gray-300 hover:text-white hover:bg-white/[0.06]'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 ${active ? 'text-[#E5BD72]' : 'text-gray-400'}`} />
-                  <span>{item.label}</span>
+                  {item.label}
                 </button>
               );
             })}
@@ -192,73 +203,132 @@ export default function Navbar({
               </form>
 
               {/* Autocomplete Card Dropdown */}
-              {showSuggestions && suggestions.length > 0 && (
-                <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-[#17151B]/95 backdrop-blur-2xl border border-white/[0.1] p-2 shadow-2xl shadow-black/80 text-xs z-50">
-                  <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#A78BFA] flex items-center justify-between border-b border-white/[0.06] pb-1.5 mb-1">
-                    <span className="flex items-center gap-1">
+              {showSuggestions && (
+                <div className="absolute left-0 right-0 mt-2 rounded-2xl bg-[#17151B]/95 backdrop-blur-2xl border border-white/[0.1] p-2.5 shadow-2xl shadow-black/80 text-xs z-50">
+                  <div className="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#A78BFA] flex items-center justify-between border-b border-white/[0.06] pb-1.5 mb-1.5">
+                    <span className="flex items-center gap-1.5">
                       <Sparkles className="w-3 h-3 text-[#E5BD72]" />
                       Universal Search
                     </span>
-                    <span className="font-mono text-gray-400 text-[9px]">Live TMDB</span>
+                    {searchLoading ? (
+                      <span className="flex items-center gap-1 text-[#E5BD72] text-[9px] font-semibold animate-pulse">
+                        Searching...
+                      </span>
+                    ) : (
+                      <span className="font-mono text-gray-400 text-[9px]">Live TMDB</span>
+                    )}
                   </div>
 
-                  <div className="divide-y divide-white/[0.04] max-h-80 overflow-y-auto scrollbar-thin">
-                    {suggestions.map((s) => {
-                      const isTV = s.mediaType === 'tv';
-                      const isPerson = s.mediaType === 'person';
-                      return (
-                        <div
-                          key={s.id || `${s.mediaType}_${s.tmdbId}`}
-                          onClick={() => handleSuggestionClick(s)}
-                          className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.06] cursor-pointer transition-colors group"
-                        >
-                          <div className="w-9 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-[#101014] border border-white/[0.06]">
-                            {isPerson ? (
-                              <img
-                                src={s.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
-                                alt={s.title}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <ContentPoster
-                                posterPath={s.rawPosterPath || s.posterPath}
-                                mediaType={s.mediaType}
-                                title={s.title}
-                                size="w185"
-                                className="w-full h-full"
-                              />
-                            )}
+                  {searchLoading && suggestions.length === 0 ? (
+                    <div className="py-6 text-center text-gray-400 flex flex-col items-center justify-center gap-2">
+                      <div className="w-5 h-5 rounded-full border-2 border-[#E5BD72] border-t-transparent animate-spin" />
+                      <span className="text-[11px]">Finding actors, movies & shows...</span>
+                    </div>
+                  ) : suggestions.length === 0 ? (
+                    <div className="py-5 px-3 text-center text-gray-400">
+                      <p className="text-xs font-semibold text-gray-300">No results found for "{navSearch}"</p>
+                      <p className="text-[10px] text-gray-500 mt-0.5">Try searching an actor, director, movie, or series name</p>
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-white/[0.04] max-h-80 overflow-y-auto scrollbar-thin space-y-1">
+                      {/* People & Actors Section */}
+                      {suggestions.some(s => s.mediaType === 'person') && (
+                        <div>
+                          <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#E5BD72] flex items-center gap-1 opacity-90">
+                            <User className="w-2.5 h-2.5" />
+                            Actors & Talent
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-1.5">
-                              <span className={`text-[9px] font-bold uppercase px-1.5 py-0.2 rounded ${
-                                isTV ? 'bg-[#A78BFA]/20 text-[#A78BFA] border border-[#A78BFA]/30' : isPerson ? 'bg-[#E5BD72]/20 text-[#E5BD72] border border-[#E5BD72]/30' : 'bg-white/[0.08] text-[#F1E9DF] border border-white/[0.1]'
-                              }`}>
-                                {isTV ? 'TV' : isPerson ? 'Person' : 'Movie'}
-                              </span>
-                              <p className="font-bold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
-                                {s.title}
-                              </p>
+                          {suggestions.filter(s => s.mediaType === 'person').map((s) => (
+                            <div
+                              key={s.id || `person_${s.tmdbId}`}
+                              onClick={() => handleSuggestionClick(s)}
+                              className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.07] cursor-pointer transition-colors group"
+                            >
+                              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0 bg-[#101014] border border-[#E5BD72]/30 group-hover:border-[#E5BD72] transition-colors">
+                                <img
+                                  src={s.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
+                                  alt={s.title || s.name}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                                />
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-1.5">
+                                  <span className="text-[9px] font-bold uppercase px-1.5 py-0.2 rounded bg-[#E5BD72]/20 text-[#E5BD72] border border-[#E5BD72]/30">
+                                    {s.knownForDepartment || 'Actor'}
+                                  </span>
+                                  <p className="font-bold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
+                                    {s.title || s.name}
+                                  </p>
+                                </div>
+                                {s.knownFor && s.knownFor.length > 0 && (
+                                  <p className="text-[10px] text-gray-400 truncate mt-0.5">
+                                    Known for: {s.knownFor.slice(0, 2).map(k => k.title || k.name).join(', ')}
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                            <div className="flex items-center gap-1.5 text-[10px] text-gray-400 mt-0.5">
-                              {s.releaseYear && <span>{s.releaseYear}</span>}
-                              {s.knownForDepartment && <span>{s.knownForDepartment}</span>}
-                            </div>
-                          </div>
-                          {s.voteAverage > 0 && (
-                            <div className="flex items-center gap-0.5 text-[#E5BD72] font-bold text-[10px] flex-shrink-0">
-                              <Star className="w-2.5 h-2.5 fill-current" />
-                              <span>{s.voteAverage.toFixed(1)}</span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Movies & TV Shows Section */}
+                      {suggestions.some(s => s.mediaType !== 'person') && (
+                        <div className="pt-1">
+                          {suggestions.some(s => s.mediaType === 'person') && (
+                            <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-[#A78BFA] flex items-center gap-1 opacity-90">
+                              <Film className="w-2.5 h-2.5" />
+                              Movies & TV Shows
                             </div>
                           )}
+                          {suggestions.filter(s => s.mediaType !== 'person').map((s) => {
+                            const isTV = s.mediaType === 'tv';
+                            return (
+                              <div
+                                key={s.id || `${s.mediaType}_${s.tmdbId}`}
+                                onClick={() => handleSuggestionClick(s)}
+                                className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-white/[0.07] cursor-pointer transition-colors group"
+                              >
+                                <div className="w-9 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-[#101014] border border-white/[0.06]">
+                                  <ContentPoster
+                                    posterPath={s.rawPosterPath || s.posterPath}
+                                    mediaType={s.mediaType}
+                                    title={s.title}
+                                    size="w185"
+                                    className="w-full h-full"
+                                  />
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className={`text-[9px] font-bold uppercase px-1.5 py-0.2 rounded ${
+                                      isTV ? 'bg-[#A78BFA]/20 text-[#A78BFA] border border-[#A78BFA]/30' : 'bg-white/[0.08] text-[#F1E9DF] border border-white/[0.1]'
+                                    }`}>
+                                      {isTV ? 'TV' : 'Movie'}
+                                    </span>
+                                    <p className="font-bold text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
+                                      {s.title}
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center gap-1.5 text-[10px] text-gray-400 mt-0.5">
+                                    {s.releaseYear && <span>{s.releaseYear}</span>}
+                                  </div>
+                                </div>
+                                {s.voteAverage > 0 && (
+                                  <div className="flex items-center gap-0.5 text-[#E5BD72] font-bold text-[10px] flex-shrink-0">
+                                    <Star className="w-2.5 h-2.5 fill-current" />
+                                    <span>{s.voteAverage.toFixed(1)}</span>
+                                  </div>
+                                )}
+                              </div>
+                            );
+                          })}
                         </div>
-                      );
-                    })}
-                  </div>
+                      )}
+                    </div>
+                  )}
 
                   <button
                     onClick={handleSearchSubmit}
-                    className="w-full mt-1.5 pt-1.5 border-t border-white/[0.06] text-center text-[11px] text-[#A78BFA] hover:text-[#E5BD72] font-semibold transition-colors"
+                    className="w-full mt-2 pt-2 border-t border-white/[0.06] text-center text-[11px] text-[#A78BFA] hover:text-[#E5BD72] font-semibold transition-colors cursor-pointer"
                   >
                     Press Enter to view all results &rarr;
                   </button>

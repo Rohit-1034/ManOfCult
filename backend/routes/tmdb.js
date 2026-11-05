@@ -709,4 +709,155 @@ router.get('/top_rated', async (req, res) => {
   return res.json({ results, page: data.page, totalPages: data.total_pages });
 });
 
+// --- 8. PERSON & ACTOR ENDPOINTS ---
+
+// /person/:id
+router.get('/person/:id', async (req, res) => {
+  try {
+    const rawId = req.params.id.replace(/^person_/, '');
+    const data = await tmdbFetch(`/person/${rawId}`);
+    return res.json({
+      id: `person_${data.id}`,
+      tmdbId: data.id,
+      name: data.name,
+      alsoKnownAs: data.also_known_as || [],
+      biography: data.biography || '',
+      birthday: data.birthday || null,
+      deathday: data.deathday || null,
+      gender: data.gender,
+      homepage: data.homepage,
+      imdbId: data.imdb_id,
+      knownForDepartment: data.known_for_department || 'Acting',
+      placeOfBirth: data.place_of_birth || null,
+      popularity: data.popularity || 0,
+      profilePath: data.profile_path ? `${TMDB_IMAGE_BASE}/h632${data.profile_path}` : null,
+      rawProfilePath: data.profile_path
+    });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch person details', message: err.message });
+  }
+});
+
+// /person/:id/combined_credits
+router.get('/person/:id/combined_credits', async (req, res) => {
+  try {
+    const rawId = req.params.id.replace(/^person_/, '');
+    const data = await tmdbFetch(`/person/${rawId}/combined_credits`);
+    
+    // Normalize cast
+    const cast = (data.cast || []).map(item => {
+      const normalized = normalizeItem(item, item.media_type || 'movie');
+      return {
+        ...normalized,
+        character: item.character || '',
+        order: typeof item.order === 'number' ? item.order : 999,
+        episodeCount: item.episode_count || null
+      };
+    });
+
+    // Normalize crew
+    const crew = (data.crew || []).map(item => {
+      const normalized = normalizeItem(item, item.media_type || 'movie');
+      return {
+        ...normalized,
+        department: item.department || '',
+        job: item.job || ''
+      };
+    });
+
+    return res.json({
+      id: data.id,
+      cast,
+      crew
+    });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch person combined credits', message: err.message });
+  }
+});
+
+// /person/:id/movie_credits
+router.get('/person/:id/movie_credits', async (req, res) => {
+  try {
+    const rawId = req.params.id.replace(/^person_/, '');
+    const data = await tmdbFetch(`/person/${rawId}/movie_credits`);
+    const cast = (data.cast || []).map(item => ({
+      ...normalizeItem(item, 'movie'),
+      character: item.character || '',
+      order: item.order
+    }));
+    const crew = (data.crew || []).map(item => ({
+      ...normalizeItem(item, 'movie'),
+      department: item.department,
+      job: item.job
+    }));
+    return res.json({ id: data.id, cast, crew });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch person movie credits', message: err.message });
+  }
+});
+
+// /person/:id/tv_credits
+router.get('/person/:id/tv_credits', async (req, res) => {
+  try {
+    const rawId = req.params.id.replace(/^person_/, '');
+    const data = await tmdbFetch(`/person/${rawId}/tv_credits`);
+    const cast = (data.cast || []).map(item => ({
+      ...normalizeItem(item, 'tv'),
+      character: item.character || '',
+      episodeCount: item.episode_count
+    }));
+    const crew = (data.crew || []).map(item => ({
+      ...normalizeItem(item, 'tv'),
+      department: item.department,
+      job: item.job
+    }));
+    return res.json({ id: data.id, cast, crew });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch person tv credits', message: err.message });
+  }
+});
+
+// /person/:id/images
+router.get('/person/:id/images', async (req, res) => {
+  try {
+    const rawId = req.params.id.replace(/^person_/, '');
+    const data = await tmdbFetch(`/person/${rawId}/images`);
+    const profiles = (data.profiles || []).map(img => ({
+      filePath: img.file_path,
+      url: `${TMDB_IMAGE_BASE}/h632${img.file_path}`,
+      thumbUrl: `${TMDB_IMAGE_BASE}/w185${img.file_path}`,
+      width: img.width,
+      height: img.height,
+      voteAverage: img.vote_average
+    }));
+    return res.json({ id: data.id, profiles });
+  } catch (err) {
+    return res.status(500).json({ error: 'Failed to fetch person images', message: err.message });
+  }
+});
+
+// /search/person
+router.get('/search/person', async (req, res) => {
+  try {
+    const { query, page = 1 } = req.query;
+    if (!query) return res.status(400).json({ error: 'query is required' });
+    const data = await tmdbFetch('/search/person', { query, page });
+    const results = (data.results || []).map(item => ({
+      id: `person_${item.id}`,
+      tmdbId: item.id,
+      mediaType: 'person',
+      title: item.name,
+      name: item.name,
+      knownForDepartment: item.known_for_department,
+      profilePath: item.profile_path ? `${TMDB_IMAGE_BASE}/w185${item.profile_path}` : null,
+      rawProfilePath: item.profile_path,
+      popularity: item.popularity,
+      knownFor: (item.known_for || []).map(k => normalizeItem(k, k.media_type || 'movie'))
+    }));
+    return res.json({ results, page: data.page, totalPages: data.total_pages, totalResults: data.total_results });
+  } catch (err) {
+    return res.status(500).json({ error: 'Search person failed', message: err.message });
+  }
+});
+
 module.exports = router;

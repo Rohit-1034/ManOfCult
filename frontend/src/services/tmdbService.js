@@ -43,6 +43,19 @@ export function getBackdropUrl(backdropPath, size = 'original') {
 }
 
 /**
+ * Construct high-quality TMDB person profile image URL.
+ * Supported sizes: 'w185', 'h632', 'original'
+ */
+export function getProfileUrl(profilePath, size = 'h632') {
+  if (!profilePath) return null;
+  if (profilePath.startsWith('http://') || profilePath.startsWith('https://')) {
+    return profilePath;
+  }
+  const cleanPath = profilePath.startsWith('/') ? profilePath : `/${profilePath}`;
+  return `${TMDB_IMAGE_BASE}/${size}${cleanPath}`;
+}
+
+/**
  * Universal requester: queries backend proxy first, falling back to direct TMDB API.
  */
 async function fetchWithFallback(proxyEndpoint, directEndpoint, directParams = {}) {
@@ -216,7 +229,48 @@ export const tmdbService = {
   // --- Universal Multi-Search ---
   async multiSearch(query, page = 1) {
     const data = await fetchWithFallback('/search/multi', '/search/multi', { query, page });
-    return data.results || [];
+    const rawResults = data.results || [];
+    return rawResults
+      .filter(item => {
+        const type = item.mediaType || item.media_type;
+        return ['movie', 'tv', 'person'].includes(type);
+      })
+      .map(item => {
+        const mediaType = item.mediaType || item.media_type;
+        const id = item.tmdbId || item.id;
+        if (mediaType === 'person') {
+          return {
+            id: `person_${id}`,
+            tmdbId: id,
+            mediaType: 'person',
+            title: item.title || item.name,
+            name: item.name || item.title,
+            knownForDepartment: item.knownForDepartment || item.known_for_department || 'Acting',
+            profilePath: item.profilePath || (item.profile_path ? getProfileUrl(item.profile_path, 'w185') : null),
+            rawProfilePath: item.rawProfilePath || item.profile_path,
+            popularity: item.popularity || 0,
+            knownFor: item.knownFor || item.known_for || []
+          };
+        }
+        const title = item.title || item.name || item.original_title || item.original_name || 'Untitled';
+        const releaseDate = item.releaseDate || item.release_date || item.first_air_date || '';
+        const releaseYear = item.releaseYear || (releaseDate && releaseDate.length >= 4 ? parseInt(releaseDate.slice(0, 4)) : null);
+        return {
+          id: `${mediaType}_${id}`,
+          tmdbId: id,
+          mediaType,
+          title,
+          overview: item.overview || '',
+          posterPath: item.posterPath || (item.poster_path ? getPosterUrl(item.poster_path, 'w500') : null),
+          rawPosterPath: item.rawPosterPath || item.poster_path,
+          backdropPath: item.backdropPath || (item.backdrop_path ? getBackdropUrl(item.backdrop_path, 'original') : null),
+          voteAverage: typeof item.voteAverage === 'number' ? item.voteAverage : (typeof item.vote_average === 'number' ? Math.round(item.vote_average * 10) / 10 : 0),
+          voteCount: item.voteCount || item.vote_count || 0,
+          popularity: item.popularity || 0,
+          releaseDate,
+          releaseYear
+        };
+      });
   },
 
   // --- Genres ---
@@ -228,6 +282,109 @@ export const tmdbService = {
   async getTVGenres() {
     const data = await fetchWithFallback('/genre/tv/list', '/genre/tv/list');
     return data.genres || [];
+  },
+
+  // --- Person & Cast ---
+  async getPersonDetails(personId) {
+    const rawId = String(personId).replace(/^person_/, '');
+    const data = await fetchWithFallback(`/person/${rawId}`, `/person/${rawId}`);
+    return {
+      id: `person_${data.id}`,
+      tmdbId: data.id,
+      name: data.name,
+      biography: data.biography || '',
+      birthday: data.birthday || null,
+      deathday: data.deathday || null,
+      gender: data.gender,
+      knownForDepartment: data.knownForDepartment || data.known_for_department || 'Acting',
+      placeOfBirth: data.placeOfBirth || data.place_of_birth || null,
+      popularity: data.popularity || 0,
+      profilePath: data.profilePath || (data.profile_path ? getProfileUrl(data.profile_path, 'h632') : null),
+      rawProfilePath: data.rawProfilePath || data.profile_path,
+      alsoKnownAs: data.alsoKnownAs || data.also_known_as || [],
+      homepage: data.homepage
+    };
+  },
+
+  async getPersonCombinedCredits(personId) {
+    const rawId = String(personId).replace(/^person_/, '');
+    const data = await fetchWithFallback(`/person/${rawId}/combined_credits`, `/person/${rawId}/combined_credits`);
+    
+    // Normalize both cast and crew
+    const rawCast = data.cast || [];
+    const rawCrew = data.crew || [];
+
+    const mapItem = (item) => {
+      const mediaType = item.mediaType || item.media_type || (item.title ? 'movie' : 'tv');
+      const id = item.tmdbId || item.id;
+      const title = item.title || item.name || item.original_title || item.original_name || 'Untitled';
+      const releaseDate = item.releaseDate || item.release_date || item.first_air_date || item.firstAirDate || '';
+      const releaseYear = item.releaseYear || (releaseDate && releaseDate.length >= 4 ? parseInt(releaseDate.slice(0, 4)) : null);
+      
+      return {
+        id: `${mediaType}_${id}`,
+        tmdbId: id,
+        mediaType,
+        title,
+        character: item.character || '',
+        department: item.department || '',
+        job: item.job || '',
+        releaseDate,
+        releaseYear,
+        posterPath: item.posterPath || (item.poster_path ? getPosterUrl(item.poster_path, 'w500') : null),
+        backdropPath: item.backdropPath || (item.backdrop_path ? getBackdropUrl(item.backdrop_path, 'original') : null),
+        voteAverage: typeof item.voteAverage === 'number' ? item.voteAverage : (typeof item.vote_average === 'number' ? Math.round(item.vote_average * 10) / 10 : 0),
+        voteCount: item.voteCount || item.vote_count || 0,
+        popularity: item.popularity || 0,
+        overview: item.overview || '',
+        order: typeof item.order === 'number' ? item.order : 999,
+        episodeCount: item.episodeCount || item.episode_count || null
+      };
+    };
+
+    return {
+      id: rawId,
+      cast: rawCast.map(mapItem),
+      crew: rawCrew.map(mapItem)
+    };
+  },
+
+  async getPersonMovieCredits(personId) {
+    const rawId = String(personId).replace(/^person_/, '');
+    return await fetchWithFallback(`/person/${rawId}/movie_credits`, `/person/${rawId}/movie_credits`);
+  },
+
+  async getPersonTVCredits(personId) {
+    const rawId = String(personId).replace(/^person_/, '');
+    return await fetchWithFallback(`/person/${rawId}/tv_credits`, `/person/${rawId}/tv_credits`);
+  },
+
+  async getPersonImages(personId) {
+    const rawId = String(personId).replace(/^person_/, '');
+    const data = await fetchWithFallback(`/person/${rawId}/images`, `/person/${rawId}/images`);
+    return (data.profiles || []).map(img => ({
+      filePath: img.filePath || img.file_path,
+      url: img.url || (img.file_path ? getProfileUrl(img.file_path, 'h632') : null),
+      thumbUrl: img.thumbUrl || (img.file_path ? getProfileUrl(img.file_path, 'w185') : null),
+      width: img.width,
+      height: img.height,
+      voteAverage: img.voteAverage || img.vote_average
+    }));
+  },
+
+  async searchPerson(query, page = 1) {
+    const data = await fetchWithFallback('/search/person', '/search/person', { query, page });
+    return (data.results || []).map(item => ({
+      id: `person_${item.id}`,
+      tmdbId: item.id,
+      mediaType: 'person',
+      title: item.name || item.title,
+      name: item.name,
+      knownForDepartment: item.known_for_department || item.knownForDepartment,
+      profilePath: item.profilePath || (item.profile_path ? getProfileUrl(item.profile_path, 'w185') : null),
+      popularity: item.popularity || 0,
+      knownFor: item.knownFor || item.known_for || []
+    }));
   }
 };
 

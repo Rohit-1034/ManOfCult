@@ -13,6 +13,7 @@ export default function MovieDetailsView({
   movieId,
   onBack,
   onSelectMovie,
+  onSelectPerson,
   user,
   onRequireAuth
 }) {
@@ -415,7 +416,7 @@ export default function MovieDetailsView({
       <div className="max-w-7xl mx-auto px-4 md:px-8 pt-10 space-y-16">
         {/* Section 1: Cast & Popular */}
         <section ref={popularRef} className="space-y-6">
-          <CastCarousel cast={movie.cast} crew={movie.crew} />
+          <CastCarousel cast={movie.cast} crew={movie.crew} onSelectPerson={onSelectPerson} />
 
           {/* Video Preview Card */}
           {movie.trailer?.embedUrl && (

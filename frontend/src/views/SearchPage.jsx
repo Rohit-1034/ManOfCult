@@ -3,7 +3,13 @@ import { Search, Filter, Star, Film, Tv, Sparkles, User, X, SlidersHorizontal } 
 import tmdbService from '../services/tmdbService';
 import ContentCard from '../components/ContentCard';
 
-export default function SearchPage({ initialQuery = '', onSelectContent, watchlistIds = [], onToggleWatchlist }) {
+export default function SearchPage({ 
+  initialQuery = '', 
+  onSelectContent, 
+  onSelectPerson, 
+  watchlistIds = [], 
+  onToggleWatchlist 
+}) {
   const [query, setQuery] = useState(initialQuery);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -182,63 +188,94 @@ export default function SearchPage({ initialQuery = '', onSelectContent, watchli
       {loading ? (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
           {[...Array(10)].map((_, i) => (
-            <div key={i} className="aspect-[2/3] rounded-2xl bg-slate-900/80 animate-pulse border border-slate-800" />
+            <div key={i} className="aspect-[2/3] rounded-2xl bg-white/[0.03] animate-pulse border border-white/[0.06]" />
           ))}
         </div>
       ) : filteredResults.length > 0 ? (
-        <div>
-          <p className="text-xs text-gray-400 mb-4 font-medium">
-            Found {filteredResults.length} verified results for "{query}"
+        <div className="space-y-10">
+          <p className="text-xs text-gray-400 font-medium">
+            Found <span className="text-[#E5BD72] font-semibold">{filteredResults.length}</span> verified results for "{query}"
           </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-            {filteredResults.map((item) => {
-              if (item.mediaType === 'person') {
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => {
-                      if (item.knownFor && item.knownFor.length > 0) {
-                        onSelectContent(item.knownFor[0]);
-                      }
-                    }}
-                    className="group relative flex flex-col rounded-2xl overflow-hidden glass-card p-4 text-center cursor-pointer"
-                  >
-                    <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-[#101014] border border-white/[0.12] mb-3 shadow-md group-hover:border-[#E5BD72]/50">
-                      <img
-                        src={item.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                      />
+          {/* People & Creators Section (when typeFilter is 'all' or 'person') */}
+          {(typeFilter === 'all' || typeFilter === 'person') && filteredResults.some(item => item.mediaType === 'person') && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 text-sm font-bold text-[#E5BD72] uppercase tracking-wider">
+                <User className="w-4 h-4" />
+                <span>Actors & Creators</span>
+                <span className="text-xs text-gray-400 font-normal">
+                  ({filteredResults.filter(i => i.mediaType === 'person').length})
+                </span>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                {filteredResults.filter(item => item.mediaType === 'person').map((item) => {
+                  const personId = item.tmdbId || item.id;
+                  return (
+                    <div
+                      key={item.id || `person_${personId}`}
+                      onClick={() => {
+                        if (onSelectPerson) {
+                          onSelectPerson(personId);
+                        } else if (onSelectContent) {
+                          onSelectContent(item);
+                        }
+                      }}
+                      className="group relative flex flex-col rounded-2xl overflow-hidden glass-card p-4 text-center cursor-pointer hover:border-[#E5BD72]/50 transition-all hover:scale-[1.02]"
+                    >
+                      <div className="w-24 h-24 mx-auto rounded-full overflow-hidden bg-[#101014] border border-white/[0.12] mb-3 shadow-md group-hover:border-[#E5BD72]/60 group-hover:scale-105 transition-all">
+                        <img
+                          src={item.profilePath || 'https://via.placeholder.com/185x278?text=Person'}
+                          alt={item.title || item.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5BD72] mb-0.5">
+                        {item.knownForDepartment || 'Talent'}
+                      </span>
+                      <h3 className="font-bold text-sm text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
+                        {item.title || item.name}
+                      </h3>
+                      {item.knownFor && item.knownFor.length > 0 && (
+                        <p className="text-[11px] text-gray-400 line-clamp-1 mt-1">
+                          Known for: {item.knownFor.map(k => k.title || k.name).join(', ')}
+                        </p>
+                      )}
                     </div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#E5BD72] mb-0.5">
-                      {item.knownForDepartment || 'Talent'}
-                    </span>
-                    <h3 className="font-bold text-sm text-[#F1E9DF] truncate group-hover:text-[#E5BD72] transition-colors">
-                      {item.title}
-                    </h3>
-                    {item.knownFor && item.knownFor.length > 0 && (
-                      <p className="text-[11px] text-slate-400 line-clamp-1 mt-1">
-                        Known for: {item.knownFor.map(k => k.title).join(', ')}
-                      </p>
-                    )}
-                  </div>
-                );
-              }
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
-              const rawId = item.tmdbId || item.id;
-              const inWl = watchlistIds.includes(Number(rawId)) || watchlistIds.includes(rawId);
-              return (
-                <ContentCard
-                  key={item.id || `${item.mediaType}_${rawId}`}
-                  item={item}
-                  onSelect={onSelectContent}
-                  inWatchlist={inWl}
-                  onToggleWatchlist={onToggleWatchlist}
-                />
-              );
-            })}
-          </div>
+          {/* Movies & Shows Section (when typeFilter is 'all', 'movie', or 'tv') */}
+          {(typeFilter === 'all' || typeFilter === 'movie' || typeFilter === 'tv') && filteredResults.some(item => item.mediaType !== 'person') && (
+            <div className="space-y-4">
+              {typeFilter === 'all' && (
+                <div className="flex items-center gap-2 text-sm font-bold text-[#A78BFA] uppercase tracking-wider">
+                  <Film className="w-4 h-4" />
+                  <span>Movies & TV Shows</span>
+                  <span className="text-xs text-gray-400 font-normal">
+                    ({filteredResults.filter(i => i.mediaType !== 'person').length})
+                  </span>
+                </div>
+              )}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                {filteredResults.filter(item => item.mediaType !== 'person').map((item) => {
+                  const rawId = item.tmdbId || item.id;
+                  const inWl = watchlistIds.includes(Number(rawId)) || watchlistIds.includes(rawId);
+                  return (
+                    <ContentCard
+                      key={item.id || `${item.mediaType}_${rawId}`}
+                      item={item}
+                      onSelect={onSelectContent}
+                      inWatchlist={inWl}
+                      onToggleWatchlist={onToggleWatchlist}
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       ) : query ? (
         <div className="py-20 text-center text-gray-500">

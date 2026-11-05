@@ -23,6 +23,7 @@ import DocumentaryPage from './views/DocumentaryPage';
 import TrendingPage from './views/TrendingPage';
 import SearchPage from './views/SearchPage';
 import ContentDetailsPage from './views/ContentDetailsPage';
+import PersonDetailsPage from './views/PersonDetailsPage';
 
 import { watchlistAPI, ratingsAPI } from './api';
 
@@ -32,6 +33,8 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [selectedContent, setSelectedContent] = useState(null);
   const [selectedMovieId, setSelectedMovieId] = useState(null);
+  const [selectedPersonId, setSelectedPersonId] = useState(null);
+  const [selectedPerson, setSelectedPerson] = useState(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [onboardingModalOpen, setOnboardingModalOpen] = useState(false);
   const [watchlistIds, setWatchlistIds] = useState([]);
@@ -39,14 +42,51 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [recentInteractions, setRecentInteractions] = useState([200010, 200021, 2571, 79132]);
 
-  // Unified select content handler (handles both movies & TV shows)
+  // Dedicated actor / person navigation handler
+  const handleSelectPerson = (personOrId) => {
+    if (!personOrId) return;
+    let id = null;
+    let personObj = null;
+
+    if (typeof personOrId === 'object') {
+      personObj = personOrId;
+      id = personOrId.tmdbId || personOrId.id;
+    } else {
+      id = personOrId;
+    }
+
+    const cleanId = Number(String(id).replace(/^person_/, '')) || id;
+    setSelectedPersonId(cleanId);
+    setSelectedPerson(personObj);
+    setPreviousView(currentView === 'person' ? previousView : currentView);
+    setCurrentView('person');
+
+    // Synchronize browser URL without reload
+    try {
+      window.history.pushState({ view: 'person', personId: cleanId }, '', `/person/${cleanId}`);
+    } catch (e) {}
+  };
+
+  // Unified select content handler (handles movies, TV shows, and intercepts persons)
   const handleSelectContent = (item) => {
     if (!item) return;
+
+    // CRITICAL: If person is passed, route to actor profile, NEVER movie details!
+    if (item.mediaType === 'person') {
+      handleSelectPerson(item);
+      return;
+    }
+
     setSelectedContent(item);
     const rawId = item.tmdbId || item.movieId || item.id;
     setSelectedMovieId(rawId);
-    setPreviousView(currentView === 'content-details' || currentView === 'movie-details' ? previousView : currentView);
+    setPreviousView(currentView === 'content-details' || currentView === 'movie-details' || currentView === 'person' ? previousView : currentView);
     setCurrentView('content-details');
+
+    const mediaType = item.mediaType === 'tv' ? 'tv' : 'movie';
+    try {
+      window.history.pushState({ view: 'content-details', id: rawId }, '', `/${mediaType}/${rawId}`);
+    } catch (e) {}
 
     if (rawId) {
       setRecentInteractions(prev => [...new Set([...prev, Number(rawId) || rawId])].slice(-10));
@@ -56,6 +96,47 @@ export default function App() {
   const handleSelectMovie = (movie) => {
     handleSelectContent(movie);
   };
+
+  // URL route parsing on initial load and browser back/forward navigation
+  useEffect(() => {
+    const handleUrlRoute = () => {
+      const path = window.location.pathname;
+      const personMatch = path.match(/^\/person\/(\d+)/);
+      if (personMatch) {
+        const pId = Number(personMatch[1]);
+        setSelectedPersonId(pId);
+        setCurrentView('person');
+        return;
+      }
+
+      const movieMatch = path.match(/^\/movie\/(\d+)/);
+      if (movieMatch) {
+        const mId = Number(movieMatch[1]);
+        setSelectedContent({ id: mId, tmdbId: mId, mediaType: 'movie' });
+        setSelectedMovieId(mId);
+        setCurrentView('content-details');
+        return;
+      }
+
+      const tvMatch = path.match(/^\/tv\/(\d+)/);
+      if (tvMatch) {
+        const tId = Number(tvMatch[1]);
+        setSelectedContent({ id: tId, tmdbId: tId, mediaType: 'tv' });
+        setSelectedMovieId(tId);
+        setCurrentView('content-details');
+        return;
+      }
+
+      const cleanPath = path.replace(/^\//, '');
+      if (['movies', 'tv-shows', 'web-series', 'anime', 'documentaries', 'trending', 'search', 'discover', 'mood', 'watchlist', 'profile'].includes(cleanPath)) {
+        setCurrentView(cleanPath);
+      }
+    };
+
+    handleUrlRoute();
+    window.addEventListener('popstate', handleUrlRoute);
+    return () => window.removeEventListener('popstate', handleUrlRoute);
+  }, []);
 
   // Check persisted auth session
   useEffect(() => {
@@ -184,6 +265,7 @@ export default function App() {
         onQuickSearch={handleQuickSearch}
         onSelectMovie={handleSelectMovie}
         onSelectContent={handleSelectContent}
+        onSelectPerson={handleSelectPerson}
       />
 
       {/* Main View Container */}
@@ -275,6 +357,19 @@ export default function App() {
           <SearchPage
             initialQuery={searchQuery}
             onSelectContent={handleSelectContent}
+            onSelectPerson={handleSelectPerson}
+            watchlistIds={watchlistIds}
+            onToggleWatchlist={handleToggleWatchlist}
+          />
+        )}
+
+        {/* Dedicated Person / Actor Profile Page */}
+        {currentView === 'person' && selectedPersonId && (
+          <PersonDetailsPage
+            personId={selectedPersonId}
+            initialPerson={selectedPerson}
+            onBack={() => setCurrentView(previousView || 'dashboard')}
+            onSelectContent={handleSelectContent}
             watchlistIds={watchlistIds}
             onToggleWatchlist={handleToggleWatchlist}
           />
@@ -288,6 +383,7 @@ export default function App() {
             initialContent={selectedContent}
             onBack={() => setCurrentView(previousView || 'dashboard')}
             onSelectContent={handleSelectContent}
+            onSelectPerson={handleSelectPerson}
             user={user}
             onRequireAuth={() => setAuthModalOpen(true)}
             watchlistIds={watchlistIds}
@@ -301,6 +397,7 @@ export default function App() {
             movieId={selectedMovieId}
             onBack={() => setCurrentView(previousView || 'discover')}
             onSelectMovie={handleSelectMovie}
+            onSelectPerson={handleSelectPerson}
             user={user}
             onRequireAuth={() => setAuthModalOpen(true)}
           />

@@ -53,10 +53,8 @@
     },
     {
       "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
-      "movieIds": [
-        200041
-      ],
-      "updatedAt": "2026-11-04T20:03:22.377Z"
+      "movieIds": [],
+      "updatedAt": "2026-11-05T07:00:12.268Z"
     },
     {
       "userId": "mood",
@@ -77,19 +75,6 @@
       "status": "watchlist",
       "addedAt": "2026-11-04T19:41:24.209Z",
       "updatedAt": "2026-11-04T19:41:24.209Z"
-    },
-    {
-      "id": "3965c849-9834-495d-994c-0e5ab7d739d9",
-      "userId": "5263f42f-9aa8-4080-b93d-2c44223be484",
-      "contentId": "movie_200041",
-      "mediaType": "movie",
-      "movieId": 200041,
-      "tmdbId": 200041,
-      "title": null,
-      "posterPath": null,
-      "status": "watchlist",
-      "addedAt": "2026-11-04T20:03:18.790Z",
-      "updatedAt": "2026-11-04T20:03:18.790Z"
     }
   ],
   "reviews": [
@@ -111,5 +96,5 @@
     }
   ],
   "feedback": [],
-  "updatedAt": "2026-11-04T20:57:07.455Z"
+  "updatedAt": "2026-11-05T07:00:12.268Z"
 }

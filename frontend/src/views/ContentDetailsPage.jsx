@@ -14,6 +14,7 @@ export default function ContentDetailsPage({
   initialContent,
   onBack,
   onSelectContent,
+  onSelectPerson,
   user,
   onRequireAuth,
   watchlistIds = [],
@@ -302,8 +303,18 @@ export default function ContentDetailsPage({
               Top Billed Cast & Characters
             </h2>
             <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin">
-              {credits.cast.slice(0, 10).map((c) => (
-                <div key={c.id} className="w-28 shrink-0 text-center group">
+              {credits.cast.slice(0, 15).map((c) => (
+                <div 
+                  key={c.id} 
+                  onClick={() => {
+                    if (onSelectPerson) {
+                      onSelectPerson(c.id);
+                    } else if (onSelectContent) {
+                      onSelectContent({ id: c.id, tmdbId: c.id, mediaType: 'person', name: c.name });
+                    }
+                  }}
+                  className="w-28 shrink-0 text-center group cursor-pointer"
+                >
                   <div className="w-22 h-22 mx-auto rounded-full overflow-hidden bg-[#17151B] border border-white/[0.12] mb-2.5 shadow-lg group-hover:border-[#E5BD72]/50 group-hover:scale-105 transition-all">
                     <img
                       src={c.profilePath || 'https://via.placeholder.com/185x278?text=Actor'}
